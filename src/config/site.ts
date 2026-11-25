@@ -172,7 +172,7 @@ export const faqs = [
   },
   {
     q: "Where do the trucks run?",
-    a: "The main lane is Southern California to Dallas, Texas, and Dallas back to Southern California. We also run Dallas, TX to Charlotte, NC.",
+    a: "We haul coast to coast across all 48 lower states. Our core lane is Southern California to Dallas, Texas and back, and we also run Dallas to Charlotte, NC.",
   },
   {
     q: "How do I request a rate?",
