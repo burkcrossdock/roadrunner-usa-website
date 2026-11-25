@@ -67,20 +67,13 @@ export function HomePage() {
           <Reveal>
             <Eyebrow>The carrier</Eyebrow>
             <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.045em] md:text-6xl md:leading-[0.92]">
-              One round trip. Full truckload.
+              Let’s Keep Your Freight Moving.
             </h2>
-            <div className="mt-6 space-y-4 text-lg leading-8 text-ink/75">
-              <p>
-                Roadrunner USA Inc keeps the work specific. Company-operated dry
-                vans haul full truckloads. Trucks run Southern
-                California to Dallas, Texas, then turn around and come back.
-              </p>
-              <p>
-                Quotes, dispatch, and customer support are based in North Carolina. The
-                brand on the road is {site.brand}. The
-                line is the whole pitch: {site.tagline}
-              </p>
-            </div>
+            <p className="mt-6 text-lg leading-8 text-ink/75">
+              Whether you’re shipping coast to coast or running a regular lane, Roadrunner USA
+              delivers dependable full truckload service, and the team behind it, from our North
+              Carolina headquarters.
+            </p>
           </Reveal>
           <Reveal delay={120}>
             <div className="overflow-hidden rounded-[1.6rem] bg-ink">
