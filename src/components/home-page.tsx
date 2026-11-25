@@ -134,14 +134,27 @@ export function HomePage() {
             </p>
             <span className="h-px flex-1 bg-[#ddd9d0]" aria-hidden />
           </div>
-          <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-8 sm:gap-x-10 lg:flex-nowrap lg:justify-between">
-            {partners.map((name) => (
-              <li key={name} className="text-[#1a1a1a] opacity-70 grayscale transition-opacity hover:opacity-100">
-                <PartnerMark name={name} />
-              </li>
-            ))}
-          </ul>
         </Container>
+        <div className="partner-marquee relative mt-8 overflow-hidden pb-10 md:pb-12">
+          <div className="partner-track flex w-max items-center">
+            {[0, 1].map((copy) => (
+              <ul
+                key={copy}
+                className="flex shrink-0 items-center"
+                aria-hidden={copy === 1 ? true : undefined}
+              >
+                {partners.map((name) => (
+                  <li
+                    key={name}
+                    className="px-8 text-[#1a1a1a] opacity-70 grayscale transition-opacity hover:opacity-100 md:px-12"
+                  >
+                    <PartnerMark name={name} />
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="bg-cream py-20 md:py-28">

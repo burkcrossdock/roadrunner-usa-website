@@ -118,6 +118,7 @@
   .lane-dash,
   .lane-truck,
   .truck-pulse,
+  .partner-track,
   .reveal-item {
     animation: none !important;
   }
@@ -177,6 +178,47 @@
 
 .truck-pulse {
   animation: truck-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes partner-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.partner-marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.partner-track {
+  animation: partner-marquee 42s linear infinite;
+}
+
+.partner-marquee:hover .partner-track,
+.partner-marquee:focus-within .partner-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-track {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 2rem;
+  }
+
+  .partner-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .partner-track [aria-hidden="true"] {
+    display: none;
+  }
 }
 
 @utility eyebrow {
