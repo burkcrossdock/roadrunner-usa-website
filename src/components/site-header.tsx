@@ -6,7 +6,6 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
 import { nav, site } from "@/config/site";
 import { AnnouncementBar } from "@/components/announcement-bar";
-import { DeskStatus } from "@/components/desk-status";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -96,29 +95,6 @@ export function SiteHeader() {
       <div className="relative z-50">
         <AnnouncementBar />
       </div>
-      <div className="relative z-50 border-b border-white/10 bg-ink text-cream">
-        <div className="mx-auto flex h-9 max-w-[1180px] items-center justify-between gap-4 px-5 text-[12px] md:px-8">
-          <p className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-cream/80">
-            <DeskStatus />
-            <span className="hidden text-cream/30 sm:inline" aria-hidden>
-              ·
-            </span>
-            <span className="hidden sm:inline">Mon–Fri 7 AM–11 PM EST</span>
-            <span className="hidden text-cream/30 md:inline" aria-hidden>
-              ·
-            </span>
-            <span className="hidden md:inline">Sat 9:30 AM–4 PM EST</span>
-          </p>
-          <p className="flex shrink-0 items-center gap-4">
-            <a className="font-semibold hover:text-white" href={site.phoneHref}>
-              {site.phone}
-            </a>
-            <a className="hidden hover:text-white lg:inline" href={site.emailHref}>
-              {site.email}
-            </a>
-          </p>
-        </div>
-      </div>
       <header className="relative z-50 border-b border-line bg-white text-ink">
         <div className="relative mx-auto flex h-16 max-w-[1180px] items-center justify-between gap-3 px-4 sm:px-5 md:h-[4.5rem] md:px-8">
           <Link href="/" aria-label={`${site.brand} home`} className="relative z-10 shrink-0">
@@ -174,7 +150,7 @@ export function SiteHeader() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          className="fixed inset-0 z-40 overflow-y-auto bg-ink pt-[9.25rem] text-cream md:pt-[9.75rem] xl:hidden"
+          className="fixed inset-0 z-40 overflow-y-auto bg-ink pt-[7.25rem] text-cream md:pt-[7.75rem] xl:hidden"
         >
           <p id={titleId} className="sr-only">
             Site menu
@@ -218,7 +194,6 @@ export function HeaderFallback() {
   return (
     <div className="sticky top-0 z-50 bg-ink">
       <div className="h-12 bg-[#0b0b0b]" />
-      <div className="h-9 border-b border-white/10" />
       <div className="h-16 border-b border-line bg-white md:h-[4.5rem]" />
     </div>
   );
