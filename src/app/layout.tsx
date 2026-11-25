@@ -69,7 +69,7 @@ const jsonLd = {
       closes: "16:00",
     },
   ],
-  areaServed: ["Southern California", "Dallas, TX"],
+  areaServed: ["Southern California", "Dallas, TX", "North Carolina"],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

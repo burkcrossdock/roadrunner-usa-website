@@ -85,7 +85,7 @@ export const services = [
     number: "04",
     title: "Dry Van Truckload",
     summary: "Full truckloads on the Southern California–Dallas round trip.",
-    body: "Company-operated dry vans haul full truckloads. The main lane runs Southern California to Dallas, Texas, then turns around and comes back to Southern California.",
+    body: "Company-operated dry vans haul full truckloads. The main lane runs Southern California to Dallas, Texas, then turns around and comes back to Southern California. We also run Texas to North Carolina on occasion.",
   },
 ] as const;
 
@@ -171,7 +171,7 @@ export const faqs = [
   },
   {
     q: "Where do the trucks run?",
-    a: "The main lane is Southern California to Dallas, Texas, and Dallas back to Southern California.",
+    a: "The main lane is Southern California to Dallas, Texas, and Dallas back to Southern California. We also run Texas to North Carolina on occasion.",
   },
   {
     q: "How do I request a rate?",

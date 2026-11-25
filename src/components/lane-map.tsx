@@ -88,6 +88,26 @@ const WESTBOUND: Array<[number, number]> = [
   [-117.52, 34.01],
 ];
 
+/** Grapevine to the North Carolina HQ, bowed north and passing just above Rock Hill. */
+const OCCASIONAL_EAST: Array<[number, number]> = [
+  [-97.08, 32.93],
+  [-92.4, 33.85],
+  [-87.4, 34.45],
+  [-83.6, 34.85],
+  [-81.2, 35.15],
+  [-80.55, 35.6],
+];
+
+/** Return trip, bowed south and passing just below Rock Hill. */
+const OCCASIONAL_WEST: Array<[number, number]> = [
+  [-80.55, 35.6],
+  [-81.25, 34.5],
+  [-84.8, 33.55],
+  [-89.6, 33.05],
+  [-93.8, 32.7],
+  [-97.08, 32.93],
+];
+
 const PANEL_ORDER = ["Mira Loma", "Grapevine", "Rock Hill"] as const;
 
 type Selection = "hq" | (typeof PANEL_ORDER)[number];
@@ -137,6 +157,8 @@ function pointAlong(points: Array<[number, number]>, distanceRatio: number) {
 const outline = linePath(OUTLINE) + " Z";
 const eastPath = linePath(EASTBOUND);
 const westPath = linePath(WESTBOUND);
+const occasionalEastPath = linePath(OCCASIONAL_EAST);
+const occasionalWestPath = linePath(OCCASIONAL_WEST);
 
 const locatedHubs = PANEL_ORDER.flatMap((city) => {
   const hub = hubs.find((item) => item.city === city);
@@ -154,6 +176,9 @@ export function LaneMap() {
   const activeHub = locatedHubs.find((hub) => hub.city === selected);
   const eastTruck = pointAlong(EASTBOUND, 0.34);
   const westTruck = pointAlong(WESTBOUND, 0.58);
+  const occasionalEastTruck = pointAlong(OCCASIONAL_EAST, 0.42);
+  const occasionalWestTruck = pointAlong(OCCASIONAL_WEST, 0.62);
+  const occasionalLabel = pointAlong(OCCASIONAL_EAST, 0.36);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -171,12 +196,13 @@ export function LaneMap() {
             <span className="text-signal">/</span> Core lane
           </p>
           <figcaption className="mt-2 max-w-md text-sm text-cream/70">
-            Round trip between {site.lane.west} and {site.lane.east}.
+            Round trip between {site.lane.west} and {site.lane.east}. We also run Texas to
+            North Carolina on occasion.
           </figcaption>
         </div>
         <div className="flex flex-wrap gap-2">
           <Chip>{hubs.length} hubs</Chip>
-          <Chip>1 core lane</Chip>
+          <Chip>1 core lane + 1 occasional</Chip>
         </div>
       </div>
 
@@ -184,7 +210,7 @@ export function LaneMap() {
         <svg
           viewBox={`0 0 ${VIEW.width} ${VIEW.height}`}
           role="img"
-          aria-label="Map of the contiguous United States showing the Southern California to Dallas round trip, three hubs, and headquarters in North Carolina"
+          aria-label="Map of the contiguous United States showing the Southern California to Dallas round trip, an occasional Texas to North Carolina lane, three hubs, and headquarters in North Carolina"
           className="h-auto w-full"
         >
           <defs>
@@ -239,6 +265,40 @@ export function LaneMap() {
             );
           })}
 
+          <g opacity="0.72">
+            <path
+              d={occasionalEastPath}
+              fill="none"
+              stroke="#e10600"
+              strokeOpacity="0.55"
+              strokeWidth="1.35"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray="2 3.5"
+            />
+            <path
+              d={occasionalWestPath}
+              fill="none"
+              stroke="#ffb1ac"
+              strokeOpacity="0.8"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray="1.5 5"
+              className="lane-dash"
+            />
+          </g>
+          <text
+            x={occasionalLabel[0]}
+            y={occasionalLabel[1] - 14}
+            textAnchor="middle"
+            fill="#f3f2ee"
+            fillOpacity="0.72"
+            fontSize="8"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Texas to the Carolinas
+          </text>
           <g filter={`url(#${glowId})`}>
             <path d={eastPath} fill="none" stroke="#e10600" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
             <path
@@ -267,6 +327,24 @@ export function LaneMap() {
             duration="22s"
             begin="-12s"
             animate={!reduceMotion}
+          />
+          <MovingTruck
+            path={occasionalEastPath}
+            x={occasionalEastTruck[0]}
+            y={occasionalEastTruck[1]}
+            duration="20s"
+            begin="-4s"
+            animate={!reduceMotion}
+            scale={0.78}
+          />
+          <MovingTruck
+            path={occasionalWestPath}
+            x={occasionalWestTruck[0]}
+            y={occasionalWestTruck[1]}
+            duration="24s"
+            begin="-15s"
+            animate={!reduceMotion}
+            scale={0.78}
           />
 
           {locatedHubs.map((hub) => {
@@ -366,6 +444,10 @@ export function LaneMap() {
           </span>
           Truck on lane
         </LegendSwatch>
+        <LegendSwatch>
+          <span className="inline-block h-0 w-5 border-t border-dashed border-signal/80" aria-hidden />
+          Occasional lane
+        </LegendSwatch>
       </div>
     </figure>
   );
@@ -418,6 +500,7 @@ function MovingTruck({
   duration,
   begin,
   animate,
+  scale = 1,
 }: {
   path: string;
   x: number;
@@ -425,20 +508,22 @@ function MovingTruck({
   duration: string;
   begin: string;
   animate: boolean;
+  scale?: number;
 }) {
+  const parked = `translate(${x} ${y})${scale === 1 ? "" : ` scale(${scale})`}`;
   return (
-    <g transform={animate ? undefined : `translate(${x} ${y})`}>
+    <g transform={animate ? undefined : parked}>
       {animate ? (
         <animateMotion dur={duration} begin={begin} repeatCount="indefinite" path={path} rotate="auto" />
       ) : null}
-      <TruckGlyph />
+      <TruckGlyph scale={animate ? scale : 1} />
     </g>
   );
 }
 
-function TruckGlyph() {
+function TruckGlyph({ scale = 1 }: { scale?: number }) {
   return (
-    <g>
+    <g transform={scale === 1 ? undefined : `scale(${scale})`}>
       <rect x="-7" y="-2.3" width="9" height="4.6" rx="0.7" fill="#f3f2ee" stroke="#101410" strokeWidth="0.45" />
       <rect x="2.1" y="-2.3" width="3.8" height="4.6" rx="0.6" fill="#e10600" stroke="#101410" strokeWidth="0.45" />
     </g>

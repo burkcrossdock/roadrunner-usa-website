@@ -150,6 +150,9 @@ export function HomePage() {
             <h2 className="mt-4 max-w-3xl text-4xl font-extrabold tracking-[-0.045em] md:text-6xl md:leading-[0.92]">
               Southern California to Dallas, then back again.
             </h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-ink/70">
+              We also run Texas to North Carolina on occasion.
+            </p>
           </Reveal>
           <Reveal>
             <LaneMap />
