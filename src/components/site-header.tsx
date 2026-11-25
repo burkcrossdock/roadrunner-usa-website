@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { Menu, Phone, X } from "lucide-react";
+import { ArrowUpRight, Menu, Phone, X } from "lucide-react";
 import { nav, site } from "@/config/site";
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { Logo } from "@/components/logo";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 function NavLink({
@@ -98,37 +97,44 @@ export function SiteHeader() {
       <header className="relative z-50 border-b border-line bg-white text-ink">
         <div className="relative mx-auto flex h-16 max-w-[1180px] items-center justify-between gap-3 px-4 sm:px-5 md:h-[4.5rem] md:px-8">
           <Link href="/" aria-label={`${site.brand} home`} className="relative z-10 shrink-0">
-            <Logo priority />
+            <Logo priority className="xl:h-9" />
           </Link>
           <nav
-            className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-x-6 xl:flex"
+            className="hidden min-w-0 flex-1 items-center justify-center gap-x-3 whitespace-nowrap xl:flex"
             aria-label="Primary"
           >
             {nav
               .filter((item) => item.href !== "/")
               .map((item) => (
-                <NavLink key={item.href} {...item} pathname={pathname} />
+                <NavLink key={item.href} {...item} pathname={pathname} className="whitespace-nowrap" />
               ))}
           </nav>
-          <div className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <a
-              href={site.phoneHref}
-              className="inline-flex size-10 items-center justify-center rounded-md text-ink hover:bg-ink/5 sm:w-auto sm:gap-2 sm:px-2"
-            >
-              <Phone className="size-4 shrink-0" aria-hidden />
-              <span className="hidden text-sm font-semibold sm:inline">{site.phone}</span>
-              <span className="sr-only sm:hidden">{site.phone}</span>
+          <div className="relative z-10 flex shrink-0 items-center gap-2 lg:gap-2.5">
+            <a href={site.phoneHref} className="inline-flex items-center gap-2.5">
+              <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#f2f1ed] md:size-11">
+                <Phone className="size-4 text-[#e10600] md:size-5" aria-hidden />
+              </span>
+              <span className="hidden leading-tight lg:block">
+                <span className="block text-[10px] font-semibold tracking-[0.14em] text-[#8a8f8c] uppercase">
+                  24/7 Dispatch
+                </span>
+                <span className="block text-sm font-bold tracking-tight text-ink">413-539-7319</span>
+              </span>
+              <span className="sr-only lg:hidden">Call 413-539-7319</span>
             </a>
-            <span className="hidden sm:contents">
-              <Link
-                href="/quote"
-                className={buttonVariants({
-                  className: "h-10 px-4 font-semibold",
-                })}
-              >
-                Get a Quote
-              </Link>
-            </span>
+            <Link
+              href="/quote"
+              className="hidden h-11 items-center rounded-full border border-[#d7d4cc] bg-white px-4 text-sm font-semibold text-ink hover:bg-[#f7f6f3] lg:inline-flex"
+            >
+              Get a Quote
+            </Link>
+            <Link
+              href="/careers#apply"
+              className="hidden h-11 items-center gap-1.5 rounded-full bg-[#e10600] px-4 text-sm font-semibold text-white hover:bg-[#c40500] lg:inline-flex"
+            >
+              Apply Today
+              <ArrowUpRight className="size-4" aria-hidden />
+            </Link>
             <button
               ref={buttonRef}
               type="button"
@@ -170,18 +176,18 @@ export function SiteHeader() {
           <div className="grid gap-3 px-5 pb-10">
             <Link
               href="/quote"
-              className={buttonVariants({ className: "h-12 text-base" })}
+              onClick={() => setOpenPath(null)}
+              className="inline-flex h-12 items-center justify-center rounded-full border border-white/25 bg-white text-base font-semibold text-ink"
             >
               Get a Quote
             </Link>
             <Link
-              href="/careers"
-              className={buttonVariants({
-                variant: "outline",
-                className: "h-12 border-white/20 bg-transparent text-base text-cream",
-              })}
+              href="/careers#apply"
+              onClick={() => setOpenPath(null)}
+              className="inline-flex h-12 items-center justify-center gap-1.5 rounded-full bg-[#e10600] text-base font-semibold text-white"
             >
-              Apply to drive
+              Apply Today
+              <ArrowUpRight className="size-4" aria-hidden />
             </Link>
           </div>
         </div>
