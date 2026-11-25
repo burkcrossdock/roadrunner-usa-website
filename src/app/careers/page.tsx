@@ -30,7 +30,8 @@ export default function CareersPage() {
             </h2>
             <p className="mt-3 text-base leading-7 text-ink/75">
               Company driving on the Southern California–Dallas round trip pays $0.70 a mile.
-              Apply with the form on this page. The office replies during posted hours.
+              Steady miles year-round, with 24/7 dispatch support. Apply with the form on
+              this page. The office replies during posted hours.
             </p>
           </article>
           <article id="owner-operators" className="scroll-mt-48">
@@ -41,8 +42,9 @@ export default function CareersPage() {
               Owner-operators keep 90% of revenue.
             </h2>
             <p className="mt-3 text-base leading-7 text-ink/75">
-              Owner-operators on this lane keep 90% of revenue. Apply with the form on this
-              page. Home time and equipment are a conversation with the office.
+              Owner-operators on this lane keep 90% of revenue. Steady miles year-round,
+              with 24/7 dispatch support. Apply with the form on this page. Home time and
+              equipment are a conversation with the office.
             </p>
           </article>
         </Container>
@@ -57,7 +59,7 @@ export default function CareersPage() {
             </div>
             <div className="mt-6 space-y-4 text-base leading-7 text-ink/75">
               <p>
-                {site.legalName} runs {site.fleetCount} dry vans. If you want that
+                {site.legalName} runs company-operated dry vans. If you want that
                 lane, apply here. Company drivers earn $0.70/mile. Owner-operators
                 keep 90% of revenue. Home time and equipment are a conversation
                 with the office.

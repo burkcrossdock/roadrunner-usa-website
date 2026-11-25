@@ -9,13 +9,13 @@ import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `${site.legalName} is a carrier based in North Carolina with eight dry vans on the Southern California–Dallas round trip.`,
+  description: `${site.legalName} is based in North Carolina and runs company-operated dry vans on the Southern California–Dallas round trip.`,
 };
 
 const facts = [
   { label: "Legal name", value: site.legalName },
   { label: "Brand", value: site.brand },
-  { label: "Fleet", value: `${site.fleetCount} dry van trucks` },
+  { label: "Fleet", value: "Company-operated dry vans" },
   { label: "Freight", value: "Full truckload" },
   { label: "Main lane", value: site.lane.summary },
   { label: "Office", value: site.location },
@@ -36,8 +36,7 @@ export default function AboutPage() {
         <Container className="grid items-center gap-10 lg:grid-cols-2">
           <div className="space-y-4 text-lg leading-8 text-ink/75">
             <p>
-              A small carrier does not need a long origin story to be clear. Eight
-              dry vans. Full truckloads. A round trip between Southern California
+              Company-operated dry vans. Full truckloads. A round trip between Southern California
               and Dallas, Texas. Dispatch and customer support are based in North
               Carolina. Hubs are in {hubs.map((hub) => `${hub.city}, ${hub.state}`).join("; ")}.
             </p>

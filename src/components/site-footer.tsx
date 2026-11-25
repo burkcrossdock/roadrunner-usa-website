@@ -8,12 +8,12 @@ export function SiteFooter() {
     <footer className="bg-ink text-cream">
       <Container className="grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
-          <Logo />
+          <Logo tone="light" />
           <p className="mt-6 max-w-sm text-lg font-semibold tracking-tight">
             {site.tagline}
           </p>
           <p className="mt-4 max-w-sm text-sm leading-6 text-cream/70">
-            {site.legalName} runs {site.fleetCount} dry vans, full truckload, on the{" "}
+            {site.legalName} runs company-operated dry vans, full truckload, on the{" "}
             {site.lane.summary.toLowerCase()}.
           </p>
         </div>

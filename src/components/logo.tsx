@@ -2,24 +2,25 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export function Logo({
+  tone = "default",
   className,
   priority = false,
 }: {
+  tone?: "default" | "light";
   className?: string;
   priority?: boolean;
 }) {
   return (
-    <span className="inline-flex items-center rounded-md bg-white px-1.5 py-0.5">
-      <Image
-        src="/brand/roadrunner-logo.svg"
-        alt="RoadRunner USA"
-        width={3000}
-        height={464}
-        priority={priority}
-        unoptimized
-        className={cn("h-8 w-auto sm:h-9 xl:h-11", className)}
-        style={{ width: "auto" }}
-      />
-    </span>
+    <Image
+      src={tone === "light" ? "/brand/roadrunner-logo-light.svg" : "/brand/roadrunner-logo.svg"}
+      alt="RoadRunner USA"
+      width={3000}
+      height={464}
+      priority={priority}
+      loading={priority ? undefined : "eager"}
+      unoptimized
+      className={cn("h-8 w-auto sm:h-9 lg:h-10", className)}
+      style={{ width: "auto" }}
+    />
   );
 }

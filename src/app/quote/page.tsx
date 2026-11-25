@@ -25,8 +25,7 @@ export default function QuotePage() {
             </p>
             <ul className="mt-5 space-y-4 text-sm leading-6 text-ink/80">
               <li>The core lane is {site.lane.summary}.</li>
-              <li>Equipment is dry van. The move is full truckload.</li>
-              <li>Fleet size is {site.fleetCount} trucks.</li>
+              <li>Equipment is company-operated dry vans. The move is full truckload.</li>
               <li>
                 Desk hours: {site.hours.map((row) => `${row.days} ${row.time}`).join(". ")}.{" "}
                 {site.hoursNote}

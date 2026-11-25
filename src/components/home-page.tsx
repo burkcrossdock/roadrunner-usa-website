@@ -22,7 +22,7 @@ export function HomePage() {
               <span className="block text-signal">Ship efficient.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-ink/75">
-              {site.legalName} is a small dry van carrier. Eight trucks. One core
+              {site.legalName} runs company-operated dry vans, full truckload. One core
               round trip: {site.lane.summary}. Based in North Carolina.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -67,12 +67,12 @@ export function HomePage() {
           <Reveal>
             <Eyebrow>The carrier</Eyebrow>
             <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.045em] md:text-6xl md:leading-[0.92]">
-              Eight dry vans. One round trip.
+              One round trip. Full truckload.
             </h2>
             <div className="mt-6 space-y-4 text-lg leading-8 text-ink/75">
               <p>
-                Roadrunner USA Inc keeps the work specific. The fleet is eight dry
-                vans, and the freight is full truckload. Trucks run Southern
+                Roadrunner USA Inc keeps the work specific. Company-operated dry
+                vans haul full truckloads. Trucks run Southern
                 California to Dallas, Texas, then turn around and come back.
               </p>
               <p>
@@ -267,7 +267,7 @@ export function HomePage() {
           <div>
             <Eyebrow>About</Eyebrow>
             <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.045em] md:text-5xl">
-              A small carrier based in North Carolina.
+              Based in North Carolina.
             </h2>
             <p className="mt-5 leading-7 text-muted-foreground">
               {site.legalName} is based in North Carolina. The trucks work the

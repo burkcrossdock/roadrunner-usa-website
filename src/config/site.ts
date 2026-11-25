@@ -22,7 +22,6 @@ export const site = {
     { days: "Saturday", time: "9:30 AM – 4:00 PM EST" },
   ],
   hoursNote: "Sunday hours are not posted.",
-  fleetCount: 8,
   equipment: "Dry van",
   mode: "Full truckload",
   lane: {
@@ -40,16 +39,9 @@ export const hubs = [
 
 /**
  * Numbers rendered in the homepage stat row.
- * `countTo` animates when it is set. `display` is the text that remains.
+ * `display` is the text that remains.
  */
 export const stats = [
-  {
-    id: "fleet",
-    display: "8",
-    countTo: 8,
-    label: "Dry van trucks",
-    detail: "The whole fleet",
-  },
   {
     id: "mode",
     display: "FTL",
@@ -75,13 +67,13 @@ export const services = [
     number: "01",
     title: "Dispatch",
     summary: "A North Carolina desk that works the SoCal–Dallas round trip.",
-    body: "Dispatch is based in North Carolina and lines up the eight dry vans on the lane between Southern California and Dallas. Call or email during posted hours and you reach the people who actually run these trucks.",
+    body: "Dispatch is based in North Carolina and lines up our dry van fleet on the lane between Southern California and Dallas. Call or email during posted hours and you reach the people who actually run these trucks.",
   },
   {
     number: "02",
     title: "Customer Support",
     summary: "Quotes, pickups, and delivery questions go to the same office.",
-    body: "Customer support is the same small office, not a separate call center. Phone the desk or write info@rdrunnerusa.com and a person on this account follows up during the hours posted on the site.",
+    body: "Customer support is the same office, not a separate call center. Phone the desk or write info@rdrunnerusa.com and a person on this account follows up during the hours posted on the site.",
   },
   {
     number: "03",
@@ -93,7 +85,7 @@ export const services = [
     number: "04",
     title: "Dry Van Truckload",
     summary: "Full truckloads on the Southern California–Dallas round trip.",
-    body: "The fleet is eight dry vans hauling full truckloads. The main lane runs Southern California to Dallas, Texas, then turns around and comes back to Southern California.",
+    body: "Company-operated dry vans haul full truckloads. The main lane runs Southern California to Dallas, Texas, then turns around and comes back to Southern California.",
   },
 ] as const;
 
@@ -175,7 +167,7 @@ export const photos = {
 export const faqs = [
   {
     q: "What do you haul?",
-    a: "Full truckloads in dry vans. The fleet is eight trucks.",
+    a: "Full truckloads in company-operated dry vans.",
   },
   {
     q: "Where do the trucks run?",
