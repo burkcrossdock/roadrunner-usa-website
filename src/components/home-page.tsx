@@ -76,13 +76,10 @@ export function HomePage() {
             </p>
           </Reveal>
           <Reveal delay={120}>
-            <div className="overflow-hidden rounded-[1.6rem] bg-ink">
+            <div className="overflow-hidden rounded-[1.6rem]">
               <div className="aspect-[5/4]">
                 <Photo src={photos.highway.src} alt={photos.highway.alt} />
               </div>
-              <p className="px-5 py-4 font-mono text-[11px] tracking-[0.14em] text-cream/70 uppercase">
-                Dry van on the highway
-              </p>
             </div>
           </Reveal>
         </Container>
