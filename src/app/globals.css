@@ -116,6 +116,7 @@
     scroll-behavior: auto;
   }
   .lane-dash,
+  .lane-truck,
   .reveal-item {
     animation: none !important;
   }
@@ -146,6 +147,25 @@
 
 .lane-dash {
   animation: lane-dash 9s linear infinite;
+}
+
+@keyframes lane-truck {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.lane-truck {
+  offset-rotate: auto;
+  animation: lane-truck 18s linear infinite;
+}
+
+.lane-truck-return {
+  animation-duration: 22s;
+  animation-delay: -8s;
 }
 
 @utility eyebrow {
