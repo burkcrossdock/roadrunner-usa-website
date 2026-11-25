@@ -253,8 +253,6 @@ export function LaneMap() {
   const glowId = `${rawId}-glow`;
   const clipId = `${rawId}-us`;
   const activeHub = locatedHubs.find((hub) => hub.city === selected);
-  const lane1Label = pointAlong(EASTBOUND, 0.48);
-  const lane2Label = pointAlong(OCCASIONAL_EAST, 0.4);
   const activeTruck = TRACKED_TRUCKS[truckIndex];
   const activeProgress = progresses[truckIndex] ?? activeTruck.progress;
   const laneMiles = LANE_MILES[activeTruck.lane];
@@ -298,12 +296,13 @@ export function LaneMap() {
             <span className="text-signal">/</span> Core lane
           </p>
           <figcaption className="mt-2 max-w-md text-sm text-cream/70">
-            Lane #1 runs Dallas, TX to Southern California. Lane #2 runs Dallas, TX to Charlotte, NC.
+            Round trip between Dallas, TX and Southern California. We also run Dallas, TX to Charlotte, NC.
           </figcaption>
         </div>
         <div className="flex flex-wrap gap-2">
           <Chip>{hubs.length} hubs</Chip>
-          <Chip>2 lanes</Chip>
+          <Chip>2 core lanes</Chip>
+          <Chip>48 states served</Chip>
         </div>
       </div>
 
@@ -311,7 +310,7 @@ export function LaneMap() {
         <svg
           viewBox={`0 0 ${VIEW.width} ${VIEW.height}`}
           role="img"
-          aria-label="Map of the contiguous United States showing Lane 1 from Dallas, Texas to Southern California in red, and Lane 2 from Dallas, Texas to Charlotte, North Carolina in blue, with three hubs and headquarters in North Carolina"
+          aria-label="Map of the contiguous United States showing a red round trip between Dallas, Texas and Southern California, a blue round trip between Dallas, Texas and Charlotte, North Carolina, three hubs, and headquarters in North Carolina"
           className="h-auto w-full"
         >
           <defs>
@@ -391,17 +390,6 @@ export function LaneMap() {
               strokeLinejoin="round"
             />
           </g>
-          <text
-            x={lane2Label[0]}
-            y={lane2Label[1] - 12}
-            textAnchor="middle"
-            fill="#93c5fd"
-            fontSize="9"
-            fontWeight="700"
-            fontFamily="ui-sans-serif, system-ui, sans-serif"
-          >
-            Lane #2
-          </text>
           <g filter={`url(#${glowId})`}>
             <path d={eastPath} fill="none" stroke="#e10600" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
             <path
@@ -415,17 +403,6 @@ export function LaneMap() {
               className="lane-dash"
             />
           </g>
-          <text
-            x={lane1Label[0]}
-            y={lane1Label[1] - 12}
-            textAnchor="middle"
-            fill="#ffb1ac"
-            fontSize="9"
-            fontWeight="700"
-            fontFamily="ui-sans-serif, system-ui, sans-serif"
-          >
-            Lane #1
-          </text>
           {TRACKED_TRUCKS.map((truck, index) => {
             const progress = progresses[index] ?? truck.progress;
             const [x, y] = pointAlong(truck.path, progress);
@@ -560,11 +537,11 @@ export function LaneMap() {
       <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 px-5 py-3 text-xs text-cream/70">
         <LegendSwatch>
           <span className="inline-block h-0.5 w-5 rounded-full bg-[#e10600]" aria-hidden />
-          Lane #1 · Dallas, TX ↔ Southern California
+          Dallas, TX ↔ Southern California
         </LegendSwatch>
         <LegendSwatch>
           <span className="inline-block h-0.5 w-5 rounded-full bg-[#3b82f6]" aria-hidden />
-          Lane #2 · Dallas, TX ↔ Charlotte, NC
+          Dallas, TX ↔ Charlotte, NC
         </LegendSwatch>
         <LegendSwatch>
           <span className="inline-block size-2.5 rounded-full border border-cream bg-ink" />
