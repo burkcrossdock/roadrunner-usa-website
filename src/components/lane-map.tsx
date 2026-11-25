@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Radio } from "lucide-react";
 import { hubs } from "@/config/site";
 
@@ -125,6 +125,23 @@ function linePath(points: Array<[number, number]>) {
     .join(" ");
 }
 
+function legOf(phase: number) {
+  const u = ((phase % 1) + 1) % 1;
+  if (u < 0.5) return { leg: "out" as const, t: u * 2 };
+  return { leg: "back" as const, t: (u - 0.5) * 2 };
+}
+
+function poseOnLeg(points: Array<[number, number]>, distanceRatio: number) {
+  const [x, y] = pointAlong(points, distanceRatio);
+  const aheadRatio = Math.min(1, distanceRatio + 0.02);
+  const behindRatio = Math.max(0, distanceRatio - 0.02);
+  const [aheadX, aheadY] = pointAlong(points, aheadRatio > distanceRatio ? aheadRatio : behindRatio);
+  const dx = aheadRatio > distanceRatio ? aheadX - x : x - pointAlong(points, behindRatio)[0];
+  const dy = aheadRatio > distanceRatio ? aheadY - y : y - pointAlong(points, behindRatio)[1];
+  const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+  return { x, y, angle };
+}
+
 function pointAlong(points: Array<[number, number]>, distanceRatio: number) {
   const projected = points.map(([lon, lat]) => project(lon, lat));
   const lengths: number[] = [];
@@ -164,78 +181,109 @@ const locatedHubs = PANEL_ORDER.flatMap((city) => {
 
 const LANE_MILES = { 1: 1400, 2: 1030 } as const;
 
+/** Round trips. `out` is the first leg; `back` returns on the paired line. `phase` is 0–1 around the loop. */
+const ROUND_TRIPS = {
+  1: {
+    out: WESTBOUND,
+    back: EASTBOUND,
+    outD: westPath,
+    backD: eastPath,
+    color: "#e10600",
+    trail: "#ffe4e1",
+  },
+  2: {
+    out: OCCASIONAL_EAST,
+    back: OCCASIONAL_WEST,
+    outD: lane2EastPath,
+    backD: lane2WestPath,
+    color: "#3b82f6",
+    trail: "#dbeafe",
+  },
+} as const;
+
 const TRACKED_TRUCKS = [
   {
     id: 1,
     lane: 1 as const,
-    path: WESTBOUND,
     from: "Dallas, TX",
     to: "Los Angeles, CA",
     progress: 0.12,
+    phase: 0.06,
+    legSeconds: 24,
     speed: 58,
     pingOffset: 2,
   },
   {
     id: 2,
     lane: 1 as const,
-    path: EASTBOUND,
     from: "Los Angeles, CA",
     to: "Dallas, TX",
     progress: 0.38,
+    phase: 0.69,
+    legSeconds: 26,
     speed: 64,
     pingOffset: 5,
   },
   {
     id: 3,
     lane: 1 as const,
-    path: WESTBOUND,
     from: "Dallas, TX",
     to: "Los Angeles, CA",
     progress: 0.67,
+    phase: 0.335,
+    legSeconds: 22,
     speed: 61,
     pingOffset: 0,
   },
   {
     id: 4,
     lane: 1 as const,
-    path: EASTBOUND,
     from: "Los Angeles, CA",
     to: "Dallas, TX",
     progress: 0.85,
+    phase: 0.925,
+    legSeconds: 28,
     speed: 55,
     pingOffset: 4,
   },
   {
     id: 5,
     lane: 2 as const,
-    path: OCCASIONAL_EAST,
     from: "Dallas, TX",
     to: "Charlotte, NC",
     progress: 0.22,
+    phase: 0.11,
+    legSeconds: 25,
     speed: 66,
     pingOffset: 1,
   },
   {
     id: 6,
     lane: 2 as const,
-    path: OCCASIONAL_WEST,
     from: "Charlotte, NC",
     to: "Dallas, TX",
     progress: 0.49,
+    phase: 0.745,
+    legSeconds: 23,
     speed: 59,
     pingOffset: 6,
   },
   {
     id: 7,
     lane: 2 as const,
-    path: OCCASIONAL_EAST,
     from: "Dallas, TX",
     to: "Charlotte, NC",
     progress: 0.81,
+    phase: 0.405,
+    legSeconds: 27,
     speed: 68,
     pingOffset: 3,
   },
 ];
+
+const TRAIL_SPAN = 0.16;
+
+type MeasureKey = "1-out" | "1-back" | "2-out" | "2-back";
 
 export function LaneMap() {
   const [selected, setSelected] = useState<Selection>("hq");
@@ -243,9 +291,13 @@ export function LaneMap() {
   const [truckIndex, setTruckIndex] = useState(0);
   const [progresses, setProgresses] = useState(() => TRACKED_TRUCKS.map((truck) => truck.progress));
   const [pingTick, setPingTick] = useState(0);
+  const measurePaths = useRef<Partial<Record<MeasureKey, SVGPathElement | null>>>({});
+  const truckNodes = useRef<Array<SVGGElement | null>>([]);
+  const trailNodes = useRef<Array<SVGPathElement | null>>([]);
   const rawId = useId().replace(/:/g, "");
   const dotsId = `${rawId}-dots`;
   const glowId = `${rawId}-glow`;
+  const haloId = `${rawId}-halo`;
   const clipId = `${rawId}-us`;
   const activeHub = locatedHubs.find((hub) => hub.city === selected);
   const activeTruck = TRACKED_TRUCKS[truckIndex];
@@ -276,6 +328,59 @@ export function LaneMap() {
       });
     }, 1000);
     return () => window.clearInterval(timer);
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    const place = (index: number, leg: "out" | "back", legT: number) => {
+      const truck = TRACKED_TRUCKS[index];
+      const trip = ROUND_TRIPS[truck.lane];
+      const key: MeasureKey = `${truck.lane}-${leg}`;
+      const path = measurePaths.current[key];
+      const node = truckNodes.current[index];
+      const trail = trailNodes.current[index];
+      if (!path || !node) return;
+      const length = path.getTotalLength();
+      if (!length) return;
+      const distance = Math.min(Math.max(legT, 0), 1) * length;
+      const point = path.getPointAtLength(distance);
+      const ahead = path.getPointAtLength(Math.min(length, distance + 12));
+      const behind = path.getPointAtLength(Math.max(0, distance - 12));
+      const facingForward = ahead.x !== point.x || ahead.y !== point.y;
+      const from = facingForward ? point : behind;
+      const to = facingForward ? ahead : point;
+      const angle = (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI;
+      node.setAttribute("transform", `translate(${point.x} ${point.y}) rotate(${angle})`);
+      if (!trail) return;
+      trail.setAttribute("d", leg === "out" ? trip.outD : trip.backD);
+      const start = Math.max(0, legT - TRAIL_SPAN);
+      const span = Math.max(legT - start, 0);
+      trail.setAttribute("stroke-dasharray", `${span} 1`);
+      trail.setAttribute("stroke-dashoffset", `${-start}`);
+      trail.setAttribute("opacity", span < 0.012 ? "0" : "1");
+    };
+
+    const applyPhase = (index: number, phase: number) => {
+      const { leg, t } = legOf(phase);
+      place(index, leg, t);
+    };
+
+    if (reduceMotion) {
+      TRACKED_TRUCKS.forEach((truck, index) => applyPhase(index, truck.phase));
+      return;
+    }
+
+    let frame = 0;
+    const started = performance.now();
+    const tick = (now: number) => {
+      const elapsed = (now - started) / 1000;
+      TRACKED_TRUCKS.forEach((truck, index) => {
+        const cycle = truck.legSeconds * 2;
+        applyPhase(index, (truck.phase + elapsed / cycle) % 1);
+      });
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, [reduceMotion]);
 
   function showTruck(nextIndex: number) {
@@ -320,6 +425,9 @@ export function LaneMap() {
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
+            </filter>
+            <filter id={haloId} x="-180%" y="-180%" width="460%" height="460%">
+              <feGaussianBlur stdDeviation="2.6" />
             </filter>
             <clipPath id={clipId}>
               <path d={outline} />
@@ -376,16 +484,61 @@ export function LaneMap() {
               className="lane-dash"
             />
           </g>
+          {( ["1-out", "1-back", "2-out", "2-back"] as const).map((key) => {
+            const [lane, leg] = key.split("-") as ["1" | "2", "out" | "back"];
+            const trip = ROUND_TRIPS[lane];
+            return (
+              <path
+                key={key}
+                ref={(node) => {
+                  measurePaths.current[key] = node;
+                }}
+                d={leg === "out" ? trip.outD : trip.backD}
+                fill="none"
+                stroke="none"
+              />
+            );
+          })}
           {TRACKED_TRUCKS.map((truck, index) => {
-            const progress = progresses[index] ?? truck.progress;
-            const [x, y] = pointAlong(truck.path, progress);
-            const color = truck.lane === 1 ? "#e10600" : "#3b82f6";
+            const trip = ROUND_TRIPS[truck.lane];
+            const { leg, t } = legOf(truck.phase);
+            const start = Math.max(0, t - TRAIL_SPAN);
+            const span = t - start;
+            return (
+              <path
+                key={`trail-${truck.id}`}
+                ref={(node) => {
+                  trailNodes.current[index] = node;
+                }}
+                d={leg === "out" ? trip.outD : trip.backD}
+                fill="none"
+                stroke={trip.trail}
+                strokeWidth="3.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                pathLength={1}
+                strokeDasharray={`${span} 1`}
+                strokeDashoffset={-start}
+                opacity={span < 0.012 ? 0 : 1}
+                filter={`url(#${truck.lane === 1 ? glowId : `${glowId}-blue`})`}
+                pointerEvents="none"
+              />
+            );
+          })}
+          {TRACKED_TRUCKS.map((truck, index) => {
+            const trip = ROUND_TRIPS[truck.lane];
+            const { leg, t } = legOf(truck.phase);
+            const points = leg === "out" ? trip.out : trip.back;
+            const pose = poseOnLeg(points, t);
             const active = index === truckIndex;
             const label = `Truck ${String(truck.id).padStart(2, "0")}, ${truck.from} to ${truck.to}`;
             return (
               <g
                 key={truck.id}
-                transform={`translate(${x} ${y})`}
+                ref={(node) => {
+                  truckNodes.current[index] = node;
+                }}
+                transform={`translate(${pose.x} ${pose.y}) rotate(${pose.angle})`}
                 tabIndex={0}
                 role="button"
                 aria-label={label}
@@ -399,16 +552,17 @@ export function LaneMap() {
                   }
                 }}
               >
+                <circle r="7.5" fill={trip.color} opacity="0.55" filter={`url(#${haloId})`} />
                 {active ? (
                   <circle
                     r="11"
-                    fill={color}
+                    fill={trip.color}
                     opacity="0.28"
                     className={reduceMotion ? undefined : "truck-pulse"}
                   />
                 ) : null}
-                <circle r="9" fill="transparent" />
-                <TruckGlyph color={color} />
+                <circle r="11" fill="transparent" />
+                <TruckGlyph color={trip.color} />
               </g>
             );
           })}
