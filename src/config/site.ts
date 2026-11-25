@@ -112,7 +112,14 @@ export const steps = [
   },
 ] as const;
 
-export const partners = ["Motive", "Verified Carrier"] as const;
+export const partners = [
+  "Descartes MacroPoint",
+  "project44",
+  "Motive",
+  "Highway",
+  "Trucker Tools",
+  "Verified Carrier",
+] as const;
 
 export const socials = [
   {

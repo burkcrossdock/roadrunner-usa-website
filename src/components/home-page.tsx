@@ -8,12 +8,6 @@ import { Photo } from "@/components/photo";
 import { Reveal } from "@/components/reveal";
 import { StatRow } from "@/components/stat-row";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-const partnerMarks: Record<(typeof partners)[number], string> = {
-  Motive: "text-[1.7rem] font-semibold tracking-[-0.045em]",
-  "Verified Carrier": "text-sm font-medium tracking-[0.22em] uppercase sm:text-base",
-};
 
 export function HomePage() {
   return (
@@ -140,17 +134,10 @@ export function HomePage() {
             </p>
             <span className="h-px flex-1 bg-[#ddd9d0]" aria-hidden />
           </div>
-          <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-14 gap-y-6 sm:gap-x-20">
+          <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-8 sm:gap-x-10 lg:flex-nowrap lg:justify-between">
             {partners.map((name) => (
-              <li key={name}>
-                <span
-                  className={cn(
-                    "inline-block text-[#1a1a1a] opacity-70 grayscale transition-opacity hover:opacity-100",
-                    partnerMarks[name],
-                  )}
-                >
-                  {name}
-                </span>
+              <li key={name} className="text-[#1a1a1a] opacity-70 grayscale transition-opacity hover:opacity-100">
+                <PartnerMark name={name} />
               </li>
             ))}
           </ul>
@@ -364,4 +351,28 @@ export function HomePage() {
       </section>
     </>
   );
+}
+
+function PartnerMark({ name }: { name: (typeof partners)[number] }) {
+  if (name === "Descartes MacroPoint") {
+    return (
+      <span className="inline-flex flex-col items-start leading-none">
+        <span className="text-[0.62rem] font-medium tracking-[0.28em]">DESCARTES</span>
+        <span className="mt-1 text-lg font-semibold tracking-[-0.03em]">MacroPoint</span>
+      </span>
+    );
+  }
+  if (name === "project44") {
+    return <span className="text-2xl font-bold tracking-[-0.04em] lowercase">project44</span>;
+  }
+  if (name === "Motive") {
+    return <span className="text-[1.65rem] font-semibold tracking-[-0.04em]">Motive</span>;
+  }
+  if (name === "Highway") {
+    return <span className="text-xl font-extrabold tracking-[0.16em]">HIGHWAY</span>;
+  }
+  if (name === "Trucker Tools") {
+    return <span className="text-xl font-bold tracking-tight">Trucker Tools</span>;
+  }
+  return <span className="text-[0.8rem] font-medium tracking-[0.2em] uppercase">Verified Carrier</span>;
 }
