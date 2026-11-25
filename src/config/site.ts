@@ -112,13 +112,7 @@ export const steps = [
   },
 ] as const;
 
-export const partners = [
-  "Motive",
-  "Verified Carrier",
-  "Schneider",
-  "TIA",
-  "TCS",
-] as const;
+export const partners = ["Motive", "Verified Carrier"] as const;
 
 export const socials = [
   {

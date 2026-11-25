@@ -8,6 +8,12 @@ import { Photo } from "@/components/photo";
 import { Reveal } from "@/components/reveal";
 import { StatRow } from "@/components/stat-row";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const partnerMarks: Record<(typeof partners)[number], string> = {
+  Motive: "text-[1.7rem] font-semibold tracking-[-0.045em]",
+  "Verified Carrier": "text-sm font-medium tracking-[0.22em] uppercase sm:text-base",
+};
 
 export function HomePage() {
   return (
@@ -125,18 +131,26 @@ export function HomePage() {
         </Container>
       </section>
 
-      <section className="border-b border-line bg-cream">
-        <Container className="py-10">
-          <p className="eyebrow text-muted-foreground">
-            <span className="text-signal">/</span> Partners
-          </p>
-          <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <section className="border-y border-line/80 bg-[#f6f5f2]">
+        <Container className="py-10 md:py-12">
+          <div className="flex items-center gap-4">
+            <span className="h-px flex-1 bg-[#ddd9d0]" aria-hidden />
+            <p className="shrink-0 text-center text-[11px] tracking-[0.18em] text-[#8d8982] uppercase">
+              Connected to the platforms shippers use
+            </p>
+            <span className="h-px flex-1 bg-[#ddd9d0]" aria-hidden />
+          </div>
+          <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-14 gap-y-6 sm:gap-x-20">
             {partners.map((name) => (
-              <li
-                key={name}
-                className="flex h-20 items-center justify-center rounded-xl border border-line bg-paper px-3 text-center text-sm font-extrabold tracking-tight text-ink/80 md:text-base"
-              >
-                {name}
+              <li key={name}>
+                <span
+                  className={cn(
+                    "inline-block text-[#1a1a1a] opacity-70 grayscale transition-opacity hover:opacity-100",
+                    partnerMarks[name],
+                  )}
+                >
+                  {name}
+                </span>
               </li>
             ))}
           </ul>
