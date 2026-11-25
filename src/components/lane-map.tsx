@@ -44,13 +44,10 @@ const INTERSTATES: Array<Array<[number, number]>> = [
   [[-93.3, 44.9], [-94.6, 39.1], [-97.5, 35.5], [-96.8, 32.8], [-98.5, 29.4]],
 ];
 
-const CITIES: Array<{ name: string; lon: number; lat: number; dx: number; dy: number }> = [
-  { name: "Los Angeles", lon: -118.24, lat: 34.05, dx: -58, dy: 16 },
-  { name: "Phoenix", lon: -112.07, lat: 33.45, dx: -10, dy: 18 },
-  { name: "El Paso", lon: -106.49, lat: 31.76, dx: -14, dy: 16 },
-  { name: "Dallas", lon: -96.8, lat: 32.78, dx: 12, dy: 18 },
-  { name: "Atlanta", lon: -84.39, lat: 33.75, dx: 8, dy: 16 },
-  { name: "Charlotte", lon: -80.84, lat: 35.23, dx: -58, dy: 14 },
+const KEY_CITIES: Array<{ name: string; lon: number; lat: number; dx: number; dy: number }> = [
+  { name: "Los Angeles, CA", lon: -118.24, lat: 34.05, dx: -86, dy: 16 },
+  { name: "Dallas, TX", lon: -96.8, lat: 32.78, dx: 10, dy: 18 },
+  { name: "Charlotte, NC", lon: -80.84, lat: 35.23, dx: 10, dy: -8 },
 ];
 
 const HUB_INFO = {
@@ -71,42 +68,40 @@ const HUB_INFO = {
   },
 } as const;
 
-const HQ = { lon: -80.55, lat: 35.6, label: "HQ · North Carolina" };
-
 const EASTBOUND: Array<[number, number]> = [
-  [-117.52, 34.01],
+  [-118.24, 34.05],
   [-112.2, 34.55],
   [-106.4, 34.25],
   [-101.4, 33.55],
-  [-97.08, 32.93],
+  [-96.8, 32.78],
 ];
 
 const WESTBOUND: Array<[number, number]> = [
-  [-97.08, 32.93],
+  [-96.8, 32.78],
   [-101.8, 32.15],
   [-107.0, 32.45],
   [-112.6, 33.15],
-  [-117.52, 34.01],
+  [-118.24, 34.05],
 ];
 
-/** Grapevine to the North Carolina HQ, bowed north and passing just above Rock Hill. */
+/** Dallas to Charlotte, bowed north and passing near Rock Hill. */
 const OCCASIONAL_EAST: Array<[number, number]> = [
-  [-97.08, 32.93],
+  [-96.8, 32.78],
   [-92.4, 33.85],
   [-87.4, 34.45],
   [-83.6, 34.85],
-  [-81.2, 35.15],
-  [-80.55, 35.6],
+  [-81.15, 35.05],
+  [-80.84, 35.23],
 ];
 
 /** Return trip, bowed south and passing just below Rock Hill. */
 const OCCASIONAL_WEST: Array<[number, number]> = [
-  [-80.55, 35.6],
+  [-80.84, 35.23],
   [-81.25, 34.5],
   [-84.8, 33.55],
   [-89.6, 33.05],
   [-93.8, 32.7],
-  [-97.08, 32.93],
+  [-96.8, 32.78],
 ];
 
 const PANEL_ORDER = ["Mira Loma", "Grapevine", "Rock Hill"] as const;
@@ -175,7 +170,7 @@ const TRACKED_TRUCKS = [
     lane: 1 as const,
     path: WESTBOUND,
     from: "Dallas, TX",
-    to: "Mira Loma, CA",
+    to: "Los Angeles, CA",
     progress: 0.12,
     speed: 58,
     pingOffset: 2,
@@ -184,7 +179,7 @@ const TRACKED_TRUCKS = [
     id: 2,
     lane: 1 as const,
     path: EASTBOUND,
-    from: "Mira Loma, CA",
+    from: "Los Angeles, CA",
     to: "Dallas, TX",
     progress: 0.38,
     speed: 64,
@@ -195,7 +190,7 @@ const TRACKED_TRUCKS = [
     lane: 1 as const,
     path: WESTBOUND,
     from: "Dallas, TX",
-    to: "Mira Loma, CA",
+    to: "Los Angeles, CA",
     progress: 0.67,
     speed: 61,
     pingOffset: 0,
@@ -204,7 +199,7 @@ const TRACKED_TRUCKS = [
     id: 4,
     lane: 1 as const,
     path: EASTBOUND,
-    from: "Mira Loma, CA",
+    from: "Los Angeles, CA",
     to: "Dallas, TX",
     progress: 0.85,
     speed: 55,
@@ -296,7 +291,7 @@ export function LaneMap() {
             <span className="text-signal">/</span> Core lane
           </p>
           <figcaption className="mt-2 max-w-md text-sm text-cream/70">
-            Round trip between Dallas, TX and Southern California. We also run Dallas, TX to Charlotte, NC.
+            Round trip between Dallas, TX and Los Angeles, CA. We also run Dallas, TX to Charlotte, NC.
           </figcaption>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -310,7 +305,7 @@ export function LaneMap() {
         <svg
           viewBox={`0 0 ${VIEW.width} ${VIEW.height}`}
           role="img"
-          aria-label="Map of the contiguous United States showing a red round trip between Dallas, Texas and Southern California, a blue round trip between Dallas, Texas and Charlotte, North Carolina, three hubs, and headquarters in North Carolina"
+          aria-label="Map of the contiguous United States with key cities Los Angeles, Dallas, and Charlotte. A red line runs between Los Angeles and Dallas. A blue line runs between Dallas and Charlotte."
           className="h-auto w-full"
         >
           <defs>
@@ -354,23 +349,6 @@ export function LaneMap() {
             ))}
           </g>
           <path d={outline} fill="none" stroke="#8ea396" strokeOpacity="0.45" strokeWidth="1.25" />
-
-          {CITIES.map((city) => {
-            const [x, y] = project(city.lon, city.lat);
-            return (
-              <text
-                key={city.name}
-                x={x + city.dx}
-                y={y + city.dy}
-                fill="#f3f2ee"
-                fillOpacity="0.55"
-                fontSize="9"
-                fontFamily="ui-sans-serif, system-ui, sans-serif"
-              >
-                {city.name}
-              </text>
-            );
-          })}
 
           <g filter={`url(#${glowId}-blue)`}>
             <path
@@ -440,37 +418,34 @@ export function LaneMap() {
             );
           })}
 
-          {locatedHubs.map((hub) => {
-            const [x, y] = project(hub.lon, hub.lat);
-            const active = selected === hub.city;
+          {KEY_CITIES.map((city) => {
+            const [x, y] = project(city.lon, city.lat);
             return (
-              <g key={hub.city}>
-                {active ? <circle cx={x} cy={y} r="9" fill="#e10600" opacity="0.22" /> : null}
-                <circle cx={x} cy={y} r={active ? 4.2 : 3.2} fill="#e10600" stroke="#fff" strokeWidth="1" />
+              <g key={city.name}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r="12"
+                  fill="#ffffff"
+                  opacity="0.28"
+                  className={reduceMotion ? undefined : "truck-pulse"}
+                />
+                <circle cx={x} cy={y} r="6" fill="#f3f2ee" opacity="0.45" />
+                <circle cx={x} cy={y} r="3.4" fill="#ffffff" />
+                <text
+                  x={x + city.dx}
+                  y={y + city.dy}
+                  fill="#f3f2ee"
+                  fontSize="11"
+                  fontWeight="700"
+                  fontFamily="ui-sans-serif, system-ui, sans-serif"
+                >
+                  {city.name}
+                </text>
               </g>
             );
           })}
 
-          {(() => {
-            const [x, y] = project(HQ.lon, HQ.lat);
-            const active = selected === "hq";
-            return (
-              <g>
-                {active ? <circle cx={x} cy={y} r="10" fill="#ffffff" opacity="0.12" /> : null}
-                <circle cx={x} cy={y} r="4.5" fill="#101410" stroke="#f3f2ee" strokeWidth="1.4" />
-                <circle cx={x} cy={y} r="1.6" fill="#e10600" />
-                <text
-                  x={x + 8}
-                  y={y - 8}
-                  fill="#f3f2ee"
-                  fontSize="9"
-                  fontFamily="ui-sans-serif, system-ui, sans-serif"
-                >
-                  {HQ.label}
-                </text>
-              </g>
-            );
-          })()}
         </svg>
 
         <aside className="border-t border-white/10 px-4 py-4 md:border-t-0 md:border-l md:px-5">
@@ -537,19 +512,15 @@ export function LaneMap() {
       <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 px-5 py-3 text-xs text-cream/70">
         <LegendSwatch>
           <span className="inline-block h-0.5 w-5 rounded-full bg-[#e10600]" aria-hidden />
-          Dallas, TX ↔ Southern California
+          Dallas, TX ↔ Los Angeles, CA
         </LegendSwatch>
         <LegendSwatch>
           <span className="inline-block h-0.5 w-5 rounded-full bg-[#3b82f6]" aria-hidden />
           Dallas, TX ↔ Charlotte, NC
         </LegendSwatch>
         <LegendSwatch>
-          <span className="inline-block size-2.5 rounded-full border border-cream bg-ink" />
-          Headquarters
-        </LegendSwatch>
-        <LegendSwatch>
-          <span className="inline-block size-2.5 rounded-full bg-signal" />
-          Hub
+          <span className="inline-block size-2.5 rounded-full bg-white shadow-[0_0_8px_#ffffff]" aria-hidden />
+          Key city
         </LegendSwatch>
       </div>
     </figure>
