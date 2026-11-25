@@ -95,12 +95,12 @@ export function SiteHeader() {
         <AnnouncementBar />
       </div>
       <header className="relative z-50 border-b border-line bg-white text-ink">
-        <div className="relative mx-auto flex h-16 max-w-[1180px] items-center justify-between gap-3 px-4 sm:px-5 md:h-[4.5rem] md:px-8">
+        <div className="relative mx-auto flex h-16 max-w-[1180px] items-center px-4 sm:px-5 md:h-[4.5rem] md:px-8">
           <Link href="/" aria-label={`${site.brand} home`} className="relative z-10 shrink-0">
             <Logo priority />
           </Link>
           <nav
-            className="hidden min-w-0 flex-1 items-center justify-center gap-x-6 whitespace-nowrap xl:flex"
+            className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-x-6 whitespace-nowrap xl:flex"
             aria-label="Primary"
           >
             {nav
@@ -109,7 +109,7 @@ export function SiteHeader() {
                 <NavLink key={item.href} {...item} pathname={pathname} className="whitespace-nowrap" />
               ))}
           </nav>
-          <div className="relative z-10 flex shrink-0 items-center gap-2 lg:gap-2.5">
+          <div className="relative z-10 ml-auto flex shrink-0 items-center gap-2">
             <a href={site.phoneHref} className="inline-flex items-center gap-2.5">
               <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#f2f1ed] md:size-11">
                 <Phone className="size-4 text-[#e10600] md:size-5" aria-hidden />
