@@ -21,7 +21,7 @@ export function AnnouncementBar() {
               href="/careers#company-drivers"
               className="font-semibold text-white underline-offset-2 hover:underline"
             >
-              $0.70/mile
+              $0.65/mile
             </Link>
           </span>
         </span>

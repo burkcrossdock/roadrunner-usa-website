@@ -8,7 +8,7 @@ import { Photo } from "@/components/photo";
 export const metadata: Metadata = {
   title: "Careers",
   description:
-    "Company drivers earn $0.70/mile. Owner-operators keep 90% of revenue. Apply to drive a dry van for RoadRunner USA on the Southern California to Dallas round trip.",
+    "Company drivers earn $0.65/mile. Owner-operators keep 90% of revenue. Apply to drive a dry van for RoadRunner USA on the Southern California to Dallas round trip.",
 };
 
 export default function CareersPage() {
@@ -26,10 +26,10 @@ export default function CareersPage() {
               <span className="text-signal">/</span> Company drivers
             </p>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight">
-              Company drivers earn $0.70/mile.
+              Company drivers earn $0.65/mile.
             </h2>
             <p className="mt-3 text-base leading-7 text-ink/75">
-              Company driving on the Southern California–Dallas round trip pays $0.70 a mile.
+              Company driving on the Southern California–Dallas round trip pays $0.65 a mile.
               Steady miles year-round, with 24/7 dispatch support. Apply with the form on
               this page.
             </p>
@@ -60,7 +60,7 @@ export default function CareersPage() {
             <div className="mt-6 space-y-4 text-base leading-7 text-ink/75">
               <p>
                 {site.legalName} runs company-operated dry vans. If you want that
-                lane, apply here. Company drivers earn $0.70/mile. Owner-operators
+                lane, apply here. Company drivers earn $0.65/mile. Owner-operators
                 keep 90% of revenue. Home time and equipment are a conversation
                 with the office.
               </p>
