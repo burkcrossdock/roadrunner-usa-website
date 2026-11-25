@@ -15,7 +15,7 @@ export default function QuotePage() {
       <PageHero
         eyebrow="Get a quote"
         title="Tell the desk what is moving."
-        lede="Pickup city, delivery city, ship date, and the freight. The office replies during posted hours."
+        lede="Pickup city, delivery city, ship date, and the freight."
       />
       <section className="bg-cream py-14 md:py-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[0.75fr_1.25fr]">
@@ -27,10 +27,6 @@ export default function QuotePage() {
               <li>The core lane is {site.lane.summary}.</li>
               <li>We also run Dallas, TX to Charlotte, NC.</li>
               <li>Equipment is company-operated dry vans. The move is full truckload.</li>
-              <li>
-                Desk hours: {site.hours.map((row) => `${row.days} ${row.time}`).join(". ")}.{" "}
-                {site.hoursNote}
-              </li>
             </ul>
             <p className="mt-6 text-sm">
               <a className="font-semibold underline decoration-signal underline-offset-4" href={site.phoneHref}>

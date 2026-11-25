@@ -17,11 +17,6 @@ export const site = {
   email: "info@rdrunnerusa.com",
   emailHref: "mailto:info@rdrunnerusa.com",
   location: "Based in North Carolina",
-  hours: [
-    { days: "Monday–Friday", time: "7:00 AM – 11:00 PM EST" },
-    { days: "Saturday", time: "9:30 AM – 4:00 PM EST" },
-  ],
-  hoursNote: "Sunday hours are not posted.",
   equipment: "Dry van",
   mode: "Full truckload",
   lane: {
@@ -67,19 +62,19 @@ export const services = [
     number: "01",
     title: "Dispatch",
     summary: "A North Carolina desk that works the SoCal–Dallas round trip.",
-    body: "Dispatch is based in North Carolina and lines up our dry van fleet on the lane between Southern California and Dallas. Call or email during posted hours and you reach the people who actually run these trucks.",
+    body: "Dispatch is based in North Carolina and lines up our dry van fleet on the lane between Southern California and Dallas. Call or email and you reach the people who run these trucks.",
   },
   {
     number: "02",
     title: "Customer Support",
     summary: "Quotes, pickups, and delivery questions go to the same office.",
-    body: "Customer support is the same office, not a separate call center. Phone the desk or write info@rdrunnerusa.com and a person on this account follows up during the hours posted on the site.",
+    body: "Customer support is the same office. Phone the desk or write info@rdrunnerusa.com and a person on this account follows up.",
   },
   {
     number: "03",
     title: "Live GPS Tracking",
-    summary: "Motive GPS on the trucks. A dispatcher replies with status.",
-    body: "The trucks carry Motive GPS. This website does not open a public tracking map. Send the load number and a dispatcher replies with where that load stands.",
+    summary: "Motive GPS on every load. Dispatch replies with a tracking link or a location update.",
+    body: "Every load is GPS-tracked with Motive. Send your load number and the best way to reach you, and our dispatch team will reply with a live tracking link or a current location update.",
   },
   {
     number: "04",
@@ -98,7 +93,7 @@ export const steps = [
   {
     number: "02",
     title: "Dispatch prices it",
-    body: "The desk reviews the request during posted hours and comes back to the phone or email you gave us.",
+    body: "The desk reviews the request and comes back to the phone or email you gave us.",
   },
   {
     number: "03",
@@ -108,7 +103,7 @@ export const steps = [
   {
     number: "04",
     title: "Ask for a status",
-    body: "Motive GPS is on the truck. Send the load number and a dispatcher replies.",
+    body: "Every load is GPS-tracked with Motive. Send the load number and dispatch replies with a tracking link or a location update.",
   },
 ] as const;
 
@@ -176,19 +171,15 @@ export const faqs = [
   },
   {
     q: "How do I request a rate?",
-    a: "Use the quote form, call (413) 539-7319, or email info@rdrunnerusa.com. The desk replies during posted hours.",
+    a: "Use the quote form, call (413) 539-7319, or email info@rdrunnerusa.com.",
   },
   {
-    q: "Can I watch my load on a map here?",
-    a: "Trucks are tracked with Motive. Send the load number on the tracking page and a dispatcher will reply. There is no public tracking login on this site.",
-  },
-  {
-    q: "When is the office open?",
-    a: "Monday through Friday, 7:00 AM to 11:00 PM EST. Saturday, 9:30 AM to 4:00 PM EST. Sunday hours are not posted.",
+    q: "How do I get a tracking update?",
+    a: "Every load is GPS-tracked with Motive. Send your load number and the best way to reach you, and our dispatch team will reply with a live tracking link or a current location update.",
   },
   {
     q: "Where is the office?",
-    a: "Based in North Carolina. That is dispatch and customer support. It is not a stop on the California–Texas lane.",
+    a: "Based in North Carolina. That is dispatch and customer support.",
   },
 ] as const;
 
@@ -208,6 +199,6 @@ export const places = [
   {
     role: "Headquarters",
     name: "Based in North Carolina",
-    detail: "Dispatch and customer support. Not a point on the freight lane.",
+    detail: "Dispatch and customer support.",
   },
 ] as const;

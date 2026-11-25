@@ -7,7 +7,7 @@ import { PageHero } from "@/components/page-hero";
 export const metadata: Metadata = {
   title: "Tracking",
   description:
-    "Send a load number and a RoadRunner USA dispatcher will reply. Trucks use Motive GPS.",
+    "Every load is GPS-tracked with Motive. Request a tracking link or a current location update from dispatch.",
 };
 
 export default function TrackingPage() {
@@ -15,22 +15,18 @@ export default function TrackingPage() {
     <>
       <PageHero
         eyebrow="Tracking"
-        title="A load number in. A dispatcher back."
-        lede="Motive GPS rides on the trucks. This page takes the load number and tells the desk to reply. It does not open a live map."
+        title="Request a tracking link or location update."
+        lede="Every load is GPS-tracked with Motive. Send your load number and the best way to reach you, and our dispatch team will reply with a live tracking link or a current location update."
       />
       <section className="bg-cream py-14 md:py-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="space-y-4 text-base leading-7 text-ink/75">
             <p>
               Use the load number from your paperwork. Add your name and either an
-              email or a phone number so someone can actually answer.
+              email or a phone number.
             </p>
             <p>
-              The desk is open {site.hours[0].days.toLowerCase()} {site.hours[0].time}, and{" "}
-              {site.hours[1].days.toLowerCase()} {site.hours[1].time}. {site.hoursNote}
-            </p>
-            <p>
-              If the form is the wrong tool, call{" "}
+              Or call{" "}
               <a className="font-semibold text-ink underline decoration-signal underline-offset-4" href={site.phoneHref}>
                 {site.phone}
               </a>

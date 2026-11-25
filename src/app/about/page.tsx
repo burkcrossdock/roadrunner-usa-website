@@ -29,7 +29,7 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About"
-        title="Built around one lane, not a national map."
+        title="Built around the Southern California–Dallas lane."
         lede={`${site.brand} is the name on the work. ${site.legalName} is the company. Based in North Carolina. The trucks run Southern California and Dallas.`}
       />
       <section className="bg-cream py-16 md:py-24">
@@ -44,10 +44,6 @@ export default function AboutPage() {
               Live location on the trucks is Motive. Partners named by
               the company are {partners.join(", ")}. The tagline is the operating
               idea: {site.tagline}
-            </p>
-            <p>
-              Hours at the desk are {site.hours[0].days} {site.hours[0].time}, and{" "}
-              {site.hours[1].days} {site.hours[1].time}. {site.hoursNote}
             </p>
           </div>
           <div className="overflow-hidden rounded-[1.5rem]">

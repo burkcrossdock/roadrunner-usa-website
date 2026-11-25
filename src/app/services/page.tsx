@@ -52,7 +52,7 @@ export default function ServicesPage() {
                 className: "h-12 px-6 text-base",
               })}
             >
-              Send a load number
+              Request a tracking update
             </Link>
           </div>
         </Container>

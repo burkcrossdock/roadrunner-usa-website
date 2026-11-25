@@ -55,20 +55,6 @@ const jsonLd = {
     addressRegion: "NC",
     addressCountry: "US",
   },
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "07:00",
-      closes: "23:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Saturday",
-      opens: "09:30",
-      closes: "16:00",
-    },
-  ],
   areaServed: ["Southern California", "Dallas, TX", "North Carolina"],
 };
 

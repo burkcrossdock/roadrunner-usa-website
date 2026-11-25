@@ -31,7 +31,7 @@ export default function CareersPage() {
             <p className="mt-3 text-base leading-7 text-ink/75">
               Company driving on the Southern California–Dallas round trip pays $0.70 a mile.
               Steady miles year-round, with 24/7 dispatch support. Apply with the form on
-              this page. The office replies during posted hours.
+              this page.
             </p>
           </article>
           <article id="owner-operators" className="scroll-mt-48">
@@ -65,9 +65,7 @@ export default function CareersPage() {
                 with the office.
               </p>
               <p>
-                Questions before you apply: {site.phone} or {site.email}.{" "}
-                {site.hours[0].days} {site.hours[0].time}. {site.hours[1].days}{" "}
-                {site.hours[1].time}.
+                Questions before you apply: {site.phone} or {site.email}.
               </p>
             </div>
           </div>

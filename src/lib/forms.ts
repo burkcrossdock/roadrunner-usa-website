@@ -105,19 +105,19 @@ export const formSpecs: Record<FormKind, FormSpec> = {
   quote: {
     kind: "quote",
     title: "Request a freight quote",
-    lede: "Send the lane, the date, and what is shipping. The desk replies during posted hours.",
+    lede: "Send the lane, the date, and what is shipping.",
     submit: "Request a quote",
     success:
-      "Quote request received. A dispatcher will follow up at the phone or email you listed, during office hours.",
+      "Quote request received. A dispatcher will follow up at the phone or email you listed.",
     fields: quoteFields,
   },
   tracking: {
     kind: "tracking",
-    title: "Ask dispatch for a load status",
-    lede: "Trucks are on Motive GPS. Send the load number and a dispatcher will reply. This page is not a live map.",
-    submit: "Send load number",
+    title: "Send your load number",
+    lede: "Include your name and the best way to reach you.",
+    submit: "Request update",
     success:
-      "Load number received. A dispatcher will reply with a status update during office hours.",
+      "Request received. Dispatch will reply with a live tracking link or a current location update.",
     fields: [
       {
         name: "loadNumber",
@@ -162,7 +162,7 @@ export const formSpecs: Record<FormKind, FormSpec> = {
     lede: "Dry van work on the Southern California–Dallas round trip. Tell us how to reach you and how long you have held a CDL.",
     submit: "Submit application",
     success:
-      "Application received. The office will be in touch during posted hours.",
+      "Application received. The office will be in touch.",
     fields: [
       {
         name: "name",
@@ -216,10 +216,10 @@ export const formSpecs: Record<FormKind, FormSpec> = {
   contact: {
     kind: "contact",
     title: "Write the office",
-    lede: "Questions that are not a quote, a load status, or a driver application can come here.",
+    lede: "Send a note to the office.",
     submit: "Send message",
     success:
-      "Message received. The office will reply during posted hours.",
+      "Message received. The office will reply.",
     fields: [
       {
         name: "name",

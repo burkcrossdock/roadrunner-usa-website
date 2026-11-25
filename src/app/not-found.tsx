@@ -9,7 +9,7 @@ export default function NotFound() {
         <p className="eyebrow text-muted-foreground">
           <span className="text-signal">/</span> 404
         </p>
-        <h1 className="mt-4 text-5xl font-extrabold tracking-[-0.05em]">That page is not on this site.</h1>
+        <h1 className="mt-4 text-5xl font-extrabold tracking-[-0.05em]">Page not found.</h1>
         <p className="mt-4 max-w-lg text-lg text-muted-foreground">
           The lane is still Southern California to Dallas. Start from the homepage or send a quote.
         </p>

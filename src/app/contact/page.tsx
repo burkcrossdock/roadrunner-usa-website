@@ -47,19 +47,6 @@ export default function ContactPage() {
             </div>
             <div>
               <p className="eyebrow text-muted-foreground">
-                <span className="text-signal">/</span> Hours · Eastern
-              </p>
-              <ul className="mt-3 space-y-1 text-base">
-                {site.hours.map((row) => (
-                  <li key={row.days}>
-                    {row.days} · {row.time}
-                  </li>
-                ))}
-                <li className="text-muted-foreground">{site.hoursNote}</li>
-              </ul>
-            </div>
-            <div>
-              <p className="eyebrow text-muted-foreground">
                 <span className="text-signal">/</span> Also on the site
               </p>
               <ul className="mt-3 space-y-1 text-sm">
@@ -70,7 +57,7 @@ export default function ContactPage() {
                 </li>
                 <li>
                   <a className="underline decoration-signal underline-offset-4" href="/tracking">
-                    Send a load number
+                    Request a tracking update
                   </a>
                 </li>
                 <li>

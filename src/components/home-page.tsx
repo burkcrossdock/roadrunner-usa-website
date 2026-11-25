@@ -88,7 +88,7 @@ export function HomePage() {
                 <Photo src={photos.highway.src} alt={photos.highway.alt} />
               </div>
               <p className="px-5 py-4 font-mono text-[11px] tracking-[0.14em] text-cream/70 uppercase">
-                Dry van on the highway · stock photo
+                Dry van on the highway
               </p>
             </div>
           </Reveal>
@@ -101,7 +101,7 @@ export function HomePage() {
             <Reveal>
               <Eyebrow>Services</Eyebrow>
               <h2 className="mt-4 max-w-xl text-4xl font-extrabold tracking-[-0.045em] md:text-6xl md:leading-[0.92]">
-                Four things this desk actually does.
+                Dispatch, support, tracking, and the trucks.
               </h2>
             </Reveal>
             <Link
@@ -208,10 +208,6 @@ export function HomePage() {
             <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.045em] md:text-5xl md:leading-[0.95]">
               From the form to a dispatcher who can answer.
             </h2>
-            <p className="mt-5 text-cream/70">
-              No promised window, and no invented on-time score. You send the
-              facts. The desk replies during the hours below.
-            </p>
           </div>
           <ol className="grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2">
             {steps.map((step) => (
@@ -236,14 +232,6 @@ export function HomePage() {
               Name, company, phone, email, both cities, a ship date, and what is
               on the truck. Or call {site.phone}.
             </p>
-            <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
-              {site.hours.map((row) => (
-                <li key={row.days}>
-                  {row.days} · {row.time}
-                </li>
-              ))}
-              <li>{site.hoursNote}</li>
-            </ul>
           </div>
           <InquiryForm kind="quote" />
         </Container>
@@ -254,12 +242,12 @@ export function HomePage() {
           <div>
             <Eyebrow>Tracking</Eyebrow>
             <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.045em] md:text-5xl md:leading-[0.95]">
-              Send the load number. A dispatcher replies.
+              Request a tracking link or location update.
             </h2>
             <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              Live GPS is Motive, used by the desk. This site does not
-              show a public map or a made-up truck ping. Put the load number in
-              the form and include a way to reach you.
+              Every load is GPS-tracked with Motive. Send your load number and
+              the best way to reach you, and our dispatch team will reply with a
+              live tracking link or a current location update.
             </p>
           </div>
           <InquiryForm kind="tracking" />
@@ -333,7 +321,7 @@ export function HomePage() {
         <Container className="flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center md:py-16">
           <div>
             <p className="eyebrow text-white/80">
-              <span className="text-white">/</span> Ready when the desk is
+              <span className="text-white">/</span> Dispatch
             </p>
             <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.045em] md:text-5xl">
               Ship safe. Ship fast. Ship efficient.

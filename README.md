@@ -2,7 +2,7 @@
 
 Marketing site for Roadrunner USA Inc, a dry van carrier running full truckloads between Southern California and Dallas, Texas. Based in North Carolina.
 
-Stat numbers, hours, contact details, services, and partner names live in [`src/config/site.ts`](src/config/site.ts). Change them there.
+Stat numbers, contact details, services, and partner names live in [`src/config/site.ts`](src/config/site.ts). Change them there.
 
 ## Run locally
 
