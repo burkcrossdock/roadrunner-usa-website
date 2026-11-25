@@ -285,15 +285,10 @@ export function LaneMap() {
 
   return (
     <figure className="overflow-hidden rounded-[1.6rem] bg-[#101410] text-cream">
-      <div className="flex flex-wrap items-end justify-between gap-3 px-5 pt-5 md:px-6 md:pt-6">
-        <div>
-          <p className="eyebrow text-cream/55">
-            <span className="text-signal">/</span> Core lane
-          </p>
-          <figcaption className="mt-2 max-w-md text-sm text-cream/70">
-            Round trip between Dallas, TX and Los Angeles, CA. We also run Dallas, TX to Charlotte, NC.
-          </figcaption>
-        </div>
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-5 md:px-6 md:pt-6">
+        <figcaption className="max-w-md text-sm text-cream/70">
+          Round trips from Dallas to Los Angeles and Charlotte.
+        </figcaption>
         <div className="flex flex-wrap gap-2">
           <Chip>{hubs.length} hubs</Chip>
           <Chip>2 core lanes</Chip>

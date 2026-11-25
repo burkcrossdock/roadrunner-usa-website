@@ -145,15 +145,29 @@ export function HomePage() {
 
       <section className="bg-cream py-20 md:py-28">
         <Container className="grid gap-8">
-          <Reveal>
-            <Eyebrow>Lane</Eyebrow>
-            <h2 className="mt-4 max-w-3xl text-4xl font-extrabold tracking-[-0.045em] md:text-6xl md:leading-[0.92]">
-              Southern California to Dallas, then back again.
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-7 text-ink/70">
-              We also run Dallas, TX to Charlotte, NC.
-            </p>
-          </Reveal>
+          <div className="grid items-end gap-6 md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.75fr)] md:items-center md:gap-12">
+            <div>
+              <p className="eyebrow text-ink">
+                <span className="text-signal">/</span>OUR NETWORK
+              </p>
+              <h2 className="mt-3 text-[2.15rem] font-normal leading-[1.02] tracking-[-0.035em] text-ink sm:text-5xl md:text-[4rem]">
+                <span className="block">Three hubs.</span>
+                <span className="mt-1 block text-[#b5b1a8]">Coast-to-coast coverage.</span>
+              </h2>
+            </div>
+            <div>
+              <p className="max-w-sm text-sm leading-6 text-muted-foreground md:text-base md:leading-7">
+                From our North Carolina headquarters to the West Coast, our hubs and dispatch keep
+                freight moving across 48 states.
+              </p>
+              <a
+                href="#our-hubs"
+                className="mt-5 inline-flex h-11 items-center rounded-full border border-[#d7d4cc] bg-white px-5 text-sm font-semibold text-ink hover:bg-[#f7f6f3]"
+              >
+                View all locations →
+              </a>
+            </div>
+          </div>
           <Reveal>
             <LaneMap />
           </Reveal>
@@ -166,7 +180,7 @@ export function HomePage() {
               </article>
             ))}
           </div>
-          <div>
+          <div id="our-hubs" className="scroll-mt-32">
             <h3 className="text-3xl font-extrabold tracking-[-0.04em] md:text-4xl">Our Hubs</h3>
             <HubCards className="mt-6" />
           </div>
