@@ -7,7 +7,7 @@ import { PageHero } from "@/components/page-hero";
 export const metadata: Metadata = {
   title: "Tracking",
   description:
-    "Send a load number and a RoadRunner USA dispatcher will reply. Trucks use Verizon Connect GPS.",
+    "Send a load number and a RoadRunner USA dispatcher will reply. Trucks use Motive GPS.",
 };
 
 export default function TrackingPage() {
@@ -16,7 +16,7 @@ export default function TrackingPage() {
       <PageHero
         eyebrow="Tracking"
         title="A load number in. A dispatcher back."
-        lede="Verizon Connect rides on the trucks. This page takes the load number and tells the desk to reply. It does not open a live map."
+        lede="Motive GPS rides on the trucks. This page takes the load number and tells the desk to reply. It does not open a live map."
       />
       <section className="bg-cream py-14 md:py-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">

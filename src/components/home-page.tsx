@@ -226,7 +226,7 @@ export function HomePage() {
               Send the load number. A dispatcher replies.
             </h2>
             <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              Live GPS is Verizon Connect, used by the desk. This site does not
+              Live GPS is Motive, used by the desk. This site does not
               show a public map or a made-up truck ping. Put the load number in
               the form and include a way to reach you.
             </p>

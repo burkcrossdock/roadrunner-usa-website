@@ -8,7 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: `Dispatch, customer support, Verizon Connect GPS, and dry van truckload on the ${site.lane.summary}.`,
+  description: `Dispatch, customer support, Motive GPS, and dry van truckload on the ${site.lane.summary}.`,
 };
 
 export default function ServicesPage() {

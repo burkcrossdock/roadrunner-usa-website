@@ -78,8 +78,8 @@ export const services = [
   {
     number: "03",
     title: "Live GPS Tracking",
-    summary: "Verizon Connect on the trucks. A dispatcher replies with status.",
-    body: "The trucks carry Verizon Connect GPS. This website does not open a public tracking map. Send the load number and a dispatcher replies with where that load stands.",
+    summary: "Motive GPS on the trucks. A dispatcher replies with status.",
+    body: "The trucks carry Motive GPS. This website does not open a public tracking map. Send the load number and a dispatcher replies with where that load stands.",
   },
   {
     number: "04",
@@ -108,12 +108,12 @@ export const steps = [
   {
     number: "04",
     title: "Ask for a status",
-    body: "Verizon Connect is on the truck. Send the load number and a dispatcher replies.",
+    body: "Motive GPS is on the truck. Send the load number and a dispatcher replies.",
   },
 ] as const;
 
 export const partners = [
-  "Verizon Connect",
+  "Motive",
   "Verified Carrier",
   "Schneider",
   "TIA",
@@ -179,7 +179,7 @@ export const faqs = [
   },
   {
     q: "Can I watch my load on a map here?",
-    a: "Trucks are tracked with Verizon Connect. Send the load number on the tracking page and a dispatcher will reply. There is no public tracking login on this site.",
+    a: "Trucks are tracked with Motive. Send the load number on the tracking page and a dispatcher will reply. There is no public tracking login on this site.",
   },
   {
     q: "When is the office open?",

@@ -114,7 +114,7 @@ export const formSpecs: Record<FormKind, FormSpec> = {
   tracking: {
     kind: "tracking",
     title: "Ask dispatch for a load status",
-    lede: "Trucks are on Verizon Connect. Send the load number and a dispatcher will reply. This page is not a live map.",
+    lede: "Trucks are on Motive GPS. Send the load number and a dispatcher will reply. This page is not a live map.",
     submit: "Send load number",
     success:
       "Load number received. A dispatcher will reply with a status update during office hours.",

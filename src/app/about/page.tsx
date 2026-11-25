@@ -41,7 +41,7 @@ export default function AboutPage() {
               Carolina. Hubs are in {hubs.map((hub) => `${hub.city}, ${hub.state}`).join("; ")}.
             </p>
             <p>
-              Live location on the trucks is Verizon Connect. Partners named by
+              Live location on the trucks is Motive. Partners named by
               the company are {partners.join(", ")}. The tagline is the operating
               idea: {site.tagline}
             </p>
