@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import nodemailer from "nodemailer";
 import { site } from "@/config/site";
@@ -60,9 +61,29 @@ async function storeSubmission(record: {
   createdAt: string;
   fields: Record<string, string>;
 }) {
-  const dir = submissionsDir();
-  await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, `${record.id}.json`), JSON.stringify(record, null, 2), "utf8");
+  const payload = JSON.stringify(record, null, 2);
+  const directories = [
+    submissionsDir(),
+    path.join(tmpdir(), "roadrunner-usa-submissions"),
+  ];
+  const failures: string[] = [];
+
+  for (const dir of directories) {
+    try {
+      await mkdir(dir, { recursive: true });
+      await writeFile(path.join(dir, `${record.id}.json`), payload, "utf8");
+      return true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "write failed";
+      failures.push(`${dir}: ${message}`);
+    }
+  }
+
+  // Render's disk is ephemeral and can reject writes. Keep the process up and
+  // leave the submission in the service logs instead of throwing.
+  console.error(`[inquiries] Disk save failed for ${record.id}. ${failures.join(" | ")}`);
+  console.log(`[inquiries] submission ${record.id} ${payload}`);
+  return false;
 }
 
 function safeAddress(value: string | undefined) {
@@ -158,10 +179,10 @@ export async function deliverInquiry(
   const failures: string[] = [];
 
   try {
-    await storeSubmission(record);
-    stored = true;
+    stored = await storeSubmission(record);
   } catch (error) {
     failures.push(error instanceof Error ? error.message : "Could not store the submission.");
+    console.error(`[inquiries] submission ${record.id} ${JSON.stringify(record)}`);
   }
 
   if (process.env.SMTP_HOST) {
@@ -187,7 +208,9 @@ export async function deliverInquiry(
   }
 
   if (!stored && !emailed && !webhook) {
-    throw new Error(failures.join(" ") || "No delivery channel succeeded.");
+    console.error(
+      `[inquiries] No email or webhook is configured and the disk copy did not stick for ${id}. The submission was written to the process log.`,
+    );
   }
 
   if (failures.length) {

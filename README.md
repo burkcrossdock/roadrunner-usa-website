@@ -18,7 +18,7 @@ npm run build
 npm start
 ```
 
-`npm start` binds to `0.0.0.0` and uses `PORT` when it is set (Render sets this), otherwise port 4317.
+`npm start` runs `scripts/start.mjs`, which reads `process.env.PORT` (or 4317 when that variable is unset) and listens on `0.0.0.0`.
 
 ## Forms
 
@@ -33,23 +33,24 @@ Each submission is handled in this order:
 
 Copy [`.env.example`](.env.example) to `.env.local` and fill in the channel you want.
 
-Without SMTP, Resend, or a webhook, the site still accepts the form and stores the JSON file. That file is the record. On Render the filesystem is wiped on every deploy and restart, so production needs email, a webhook, or a [persistent disk](https://render.com/docs/disks) mounted at `SUBMISSIONS_DIR`. Do not commit files in `data/submissions/`; they can contain personal information.
+Without SMTP, Resend, or a webhook, the site still accepts the form. It writes a JSON file under `data/submissions/` when that directory is writable, and falls back to the system temp directory if it is not. A failed disk write is logged and does not stop the server. On Render that disk is wiped on every deploy and restart, so production mail needs SMTP, Resend, or a webhook. Do not commit files in `data/submissions/`; they can contain personal information.
 
 Resend’s onboarding sender only delivers to the Resend account owner until the `rdrunnerusa.com` domain is verified. Set `RESEND_FROM` to an address on that domain after verification.
 
 ## Deploy on Render
 
-`render.yaml` describes a Node web service.
+`render.yaml` describes a free Node web service.
 
-1. Push this repo to GitHub or GitLab.
-2. In the Render dashboard, create a Blueprint from `render.yaml`, or create a Web Service manually:
-   - Runtime: Node
-   - Build command: `npm ci && npm run build`
-   - Start command: `npm start`
-3. Set `NEXT_PUBLIC_SITE_URL` to the public `https://` origin.
-4. Set SMTP or Resend variables from `.env.example` so form mail reaches `info@rdrunnerusa.com`.
+Create a Web Service from the public GitHub repo, or apply the Blueprint.
 
-The server listens on `0.0.0.0:$PORT`.
+- Runtime: Node
+- Plan: Free
+- Build command: `npm ci && npm run build`
+- Start command: `npm start`
+
+`npm start` binds to `0.0.0.0` on `process.env.PORT`. Render sets `PORT`; do not hard-code it.
+
+Set `NEXT_PUBLIC_SITE_URL` to the public `https://` origin. Set SMTP or Resend variables from `.env.example` so form mail reaches `info@rdrunnerusa.com`. The site still starts and accepts forms when those are unset.
 
 ## Photos
 
