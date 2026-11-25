@@ -117,6 +117,7 @@
   }
   .lane-dash,
   .lane-truck,
+  .truck-pulse,
   .reveal-item {
     animation: none !important;
   }
@@ -166,6 +167,16 @@
 .lane-truck-return {
   animation-duration: 22s;
   animation-delay: -8s;
+}
+
+@keyframes truck-pulse {
+  50% {
+    opacity: 0.28;
+  }
+}
+
+.truck-pulse {
+  animation: truck-pulse 1.6s ease-in-out infinite;
 }
 
 @utility eyebrow {

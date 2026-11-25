@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, type ReactNode } from "react";
+import { Radio } from "lucide-react";
 import { hubs } from "@/config/site";
 
 const VIEW = { width: 632, height: 412, pad: 16 };
@@ -166,20 +167,100 @@ const locatedHubs = PANEL_ORDER.flatMap((city) => {
   return [{ ...hub, ...HUB_INFO[city] }];
 });
 
+const LANE_MILES = { 1: 1400, 2: 1030 } as const;
+
+const TRACKED_TRUCKS = [
+  {
+    id: 1,
+    lane: 1 as const,
+    path: WESTBOUND,
+    from: "Dallas, TX",
+    to: "Mira Loma, CA",
+    progress: 0.12,
+    speed: 58,
+    pingOffset: 2,
+  },
+  {
+    id: 2,
+    lane: 1 as const,
+    path: EASTBOUND,
+    from: "Mira Loma, CA",
+    to: "Dallas, TX",
+    progress: 0.38,
+    speed: 64,
+    pingOffset: 5,
+  },
+  {
+    id: 3,
+    lane: 1 as const,
+    path: WESTBOUND,
+    from: "Dallas, TX",
+    to: "Mira Loma, CA",
+    progress: 0.67,
+    speed: 61,
+    pingOffset: 0,
+  },
+  {
+    id: 4,
+    lane: 1 as const,
+    path: EASTBOUND,
+    from: "Mira Loma, CA",
+    to: "Dallas, TX",
+    progress: 0.85,
+    speed: 55,
+    pingOffset: 4,
+  },
+  {
+    id: 5,
+    lane: 2 as const,
+    path: OCCASIONAL_EAST,
+    from: "Dallas, TX",
+    to: "Charlotte, NC",
+    progress: 0.22,
+    speed: 66,
+    pingOffset: 1,
+  },
+  {
+    id: 6,
+    lane: 2 as const,
+    path: OCCASIONAL_WEST,
+    from: "Charlotte, NC",
+    to: "Dallas, TX",
+    progress: 0.49,
+    speed: 59,
+    pingOffset: 6,
+  },
+  {
+    id: 7,
+    lane: 2 as const,
+    path: OCCASIONAL_EAST,
+    from: "Dallas, TX",
+    to: "Charlotte, NC",
+    progress: 0.81,
+    speed: 68,
+    pingOffset: 3,
+  },
+];
+
 export function LaneMap() {
   const [selected, setSelected] = useState<Selection>("hq");
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [truckIndex, setTruckIndex] = useState(0);
+  const [progresses, setProgresses] = useState(() => TRACKED_TRUCKS.map((truck) => truck.progress));
+  const [pingTick, setPingTick] = useState(0);
   const rawId = useId().replace(/:/g, "");
   const dotsId = `${rawId}-dots`;
   const glowId = `${rawId}-glow`;
   const clipId = `${rawId}-us`;
   const activeHub = locatedHubs.find((hub) => hub.city === selected);
-  const eastTruck = pointAlong(EASTBOUND, 0.34);
-  const westTruck = pointAlong(WESTBOUND, 0.58);
-  const lane2EastTruck = pointAlong(OCCASIONAL_EAST, 0.42);
-  const lane2WestTruck = pointAlong(OCCASIONAL_WEST, 0.62);
   const lane1Label = pointAlong(EASTBOUND, 0.48);
   const lane2Label = pointAlong(OCCASIONAL_EAST, 0.4);
+  const activeTruck = TRACKED_TRUCKS[truckIndex];
+  const activeProgress = progresses[truckIndex] ?? activeTruck.progress;
+  const laneMiles = LANE_MILES[activeTruck.lane];
+  const milesLeft = Math.round(laneMiles * (1 - activeProgress));
+  const percentComplete = Math.round(activeProgress * 100);
+  const pingSeconds = ((pingTick + activeTruck.pingOffset) % 8) + 1;
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -188,6 +269,26 @@ export function LaneMap() {
     query.addEventListener("change", sync);
     return () => query.removeEventListener("change", sync);
   }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setPingTick((tick) => tick + 1);
+      setProgresses((current) => {
+        if (reduceMotion) return current;
+        return current.map((progress, index) => {
+          const truck = TRACKED_TRUCKS[index];
+          const step = (truck.speed / LANE_MILES[truck.lane]) * 0.04;
+          return (progress + step) % 1;
+        });
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [reduceMotion]);
+
+  function showTruck(nextIndex: number) {
+    const count = TRACKED_TRUCKS.length;
+    setTruckIndex(((nextIndex % count) + count) % count);
+  }
 
   return (
     <figure className="overflow-hidden rounded-[1.6rem] bg-[#101410] text-cream">
@@ -325,40 +426,42 @@ export function LaneMap() {
           >
             Lane #1
           </text>
-          <MovingTruck
-            path={eastPath}
-            x={eastTruck[0]}
-            y={eastTruck[1]}
-            duration="18s"
-            begin="-6s"
-            animate={!reduceMotion}
-          />
-          <MovingTruck
-            path={westPath}
-            x={westTruck[0]}
-            y={westTruck[1]}
-            duration="22s"
-            begin="-12s"
-            animate={!reduceMotion}
-          />
-          <MovingTruck
-            path={lane2EastPath}
-            x={lane2EastTruck[0]}
-            y={lane2EastTruck[1]}
-            duration="20s"
-            begin="-4s"
-            animate={!reduceMotion}
-            color="#3b82f6"
-          />
-          <MovingTruck
-            path={lane2WestPath}
-            x={lane2WestTruck[0]}
-            y={lane2WestTruck[1]}
-            duration="24s"
-            begin="-15s"
-            animate={!reduceMotion}
-            color="#3b82f6"
-          />
+          {TRACKED_TRUCKS.map((truck, index) => {
+            const progress = progresses[index] ?? truck.progress;
+            const [x, y] = pointAlong(truck.path, progress);
+            const color = truck.lane === 1 ? "#e10600" : "#3b82f6";
+            const active = index === truckIndex;
+            const label = `Truck ${String(truck.id).padStart(2, "0")}, ${truck.from} to ${truck.to}`;
+            return (
+              <g
+                key={truck.id}
+                transform={`translate(${x} ${y})`}
+                tabIndex={0}
+                role="button"
+                aria-label={label}
+                aria-pressed={active}
+                className="cursor-pointer outline-none"
+                onClick={() => showTruck(index)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    showTruck(index);
+                  }
+                }}
+              >
+                {active ? (
+                  <circle
+                    r="11"
+                    fill={color}
+                    opacity="0.28"
+                    className={reduceMotion ? undefined : "truck-pulse"}
+                  />
+                ) : null}
+                <circle r="9" fill="transparent" />
+                <TruckGlyph color={color} />
+              </g>
+            );
+          })}
 
           {locatedHubs.map((hub) => {
             const [x, y] = project(hub.lon, hub.lat);
@@ -432,12 +535,25 @@ export function LaneMap() {
             ) : null}
           </div>
 
-          <div className="mt-3 rounded-xl border border-white/10 px-3 py-3">
-            <p className="text-[11px] font-semibold tracking-[0.14em] text-signal uppercase">Motive GPS</p>
-            <p className="mt-1 text-xs leading-5 text-cream/65">
-              Loads are tracked with Motive GPS and visible to our dispatch team.
-            </p>
-          </div>
+          <TrackingCard
+            truckNumber={activeTruck.id}
+            route={`${activeTruck.from} → ${activeTruck.to}`}
+            percent={percentComplete}
+            laneMiles={laneMiles}
+            milesLeft={milesLeft}
+            speed={activeTruck.speed}
+            pingLabel={`${pingSeconds}s ago`}
+            barColor={activeTruck.lane === 1 ? "#e10600" : "#3b82f6"}
+            onPrevious={() => showTruck(truckIndex - 1)}
+            onNext={() => showTruck(truckIndex + 1)}
+          />
+          <p className="mt-3 flex items-start gap-2 text-[11px] leading-4 text-cream/45">
+            <Radio className="mt-0.5 size-3.5 shrink-0 text-signal" aria-hidden />
+            <span>
+              Loads are GPS-tracked with Motive and visible to our dispatch team. Trucks and
+              telemetry shown here are illustrative.
+            </span>
+          </p>
         </aside>
       </div>
 
@@ -503,30 +619,89 @@ function LegendSwatch({ children }: { children: ReactNode }) {
   return <span className="inline-flex items-center gap-2">{children}</span>;
 }
 
-function MovingTruck({
-  path,
-  x,
-  y,
-  duration,
-  begin,
-  animate,
-  color = "#e10600",
+function TrackingCard({
+  truckNumber,
+  route,
+  percent,
+  laneMiles,
+  milesLeft,
+  speed,
+  pingLabel,
+  barColor,
+  onPrevious,
+  onNext,
 }: {
-  path: string;
-  x: number;
-  y: number;
-  duration: string;
-  begin: string;
-  animate: boolean;
-  color?: string;
+  truckNumber: number;
+  route: string;
+  percent: number;
+  laneMiles: number;
+  milesLeft: number;
+  speed: number;
+  pingLabel: string;
+  barColor: string;
+  onPrevious: () => void;
+  onNext: () => void;
 }) {
+  const label = `Truck ${String(truckNumber).padStart(2, "0")}`;
   return (
-    <g transform={animate ? undefined : `translate(${x} ${y})`}>
-      {animate ? (
-        <animateMotion dur={duration} begin={begin} repeatCount="indefinite" path={path} rotate="auto" />
-      ) : null}
-      <TruckGlyph color={color} />
-    </g>
+    <div className="mt-3 rounded-xl border border-white/10 bg-[#141a16] px-3 py-3">
+      <div className="flex items-center gap-2">
+        <span className="size-2 shrink-0 rounded-full bg-emerald-400" aria-hidden />
+        <p className="text-xs font-semibold tracking-wide">Motive GPS</p>
+      </div>
+      <div className="mt-3 flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="text-base font-semibold tracking-tight">{label} · In transit</p>
+          <p className="mt-0.5 text-xs text-cream/65">{route}</p>
+        </div>
+        <div className="flex shrink-0 gap-1">
+          <button
+            type="button"
+            onClick={onPrevious}
+            aria-label="Previous truck"
+            className="inline-flex size-9 items-center justify-center rounded-md border border-white/15 text-cream hover:bg-white/10"
+          >
+            <span aria-hidden>‹</span>
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            aria-label="Next truck"
+            className="inline-flex size-9 items-center justify-center rounded-md border border-white/15 text-cream hover:bg-white/10"
+          >
+            <span aria-hidden>›</span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={percent}
+        aria-label={`${label} progress along the lane`}
+      >
+        <div className="h-full rounded-full" style={{ width: `${percent}%`, backgroundColor: barColor }} />
+      </div>
+      <div className="mt-1.5 flex items-center justify-between text-[11px] text-cream/60">
+        <span>{percent}% complete</span>
+        <span>{laneMiles.toLocaleString("en-US")} mi lane</span>
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-1.5">
+        <StatTile label="Speed" value={`${speed} mph`} />
+        <StatTile label="Miles left" value={milesLeft.toLocaleString("en-US")} />
+        <StatTile label="Last ping" value={pingLabel} />
+      </div>
+    </div>
+  );
+}
+
+function StatTile({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg bg-black/25 px-1.5 py-2 text-center">
+      <p className="text-[9px] tracking-[0.12em] text-cream/45 uppercase">{label}</p>
+      <p className="mt-1 text-sm font-semibold tracking-tight">{value}</p>
+    </div>
   );
 }
 
