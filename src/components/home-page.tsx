@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { faqs, partners, photos, places, services, site, steps } from "@/config/site";
 import { Container, Eyebrow } from "@/components/container";
+import { HubCards } from "@/components/hubs";
 import { InquiryForm } from "@/components/inquiry-form";
 import { LaneMap } from "@/components/lane-map";
 import { Photo } from "@/components/photo";
@@ -22,8 +23,7 @@ export function HomePage() {
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-ink/75">
               {site.legalName} is a small dry van carrier. Eight trucks. One core
-              round trip: {site.lane.summary}. Dispatch answers from Matthews,
-              North Carolina.
+              round trip: {site.lane.summary}. Based in North Carolina.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -76,8 +76,8 @@ export function HomePage() {
                 California to Dallas, Texas, then turn around and come back.
               </p>
               <p>
-                Quotes, dispatch, and customer support run through{" "}
-                {site.address.full}. The brand on the road is {site.brand}. The
+                Quotes, dispatch, and customer support are based in North Carolina. The
+                brand on the road is {site.brand}. The
                 line is the whole pitch: {site.tagline}
               </p>
             </div>
@@ -162,6 +162,10 @@ export function HomePage() {
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{place.detail}</p>
               </article>
             ))}
+          </div>
+          <div>
+            <h3 className="text-3xl font-extrabold tracking-[-0.04em] md:text-4xl">Our Hubs</h3>
+            <HubCards className="mt-6" />
           </div>
         </Container>
       </section>
@@ -263,10 +267,10 @@ export function HomePage() {
           <div>
             <Eyebrow>About</Eyebrow>
             <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.045em] md:text-5xl">
-              A small carrier with the office in Matthews.
+              A small carrier based in North Carolina.
             </h2>
             <p className="mt-5 leading-7 text-muted-foreground">
-              {site.legalName} works from {site.address.full}. The trucks work the
+              {site.legalName} is based in North Carolina. The trucks work the
               California–Texas round trip. That is the company.
             </p>
             <Link

@@ -42,7 +42,7 @@ export function DeskStatus() {
   }, []);
 
   if (!status) {
-    return <span className="text-cream/80">Matthews desk · Eastern time</span>;
+    return <span className="text-cream/80">Desk · Eastern time</span>;
   }
 
   const dot =

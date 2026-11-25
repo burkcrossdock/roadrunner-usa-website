@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     default: `${site.brand} · Dry van truckload, SoCal to Dallas`,
     template: `%s · ${site.brand}`,
   },
-  description: `${site.legalName} runs eight dry vans, full truckload, between Southern California and Dallas. Office: ${site.address.full}. ${site.phone}.`,
+  description: `${site.legalName} runs eight dry vans, full truckload, between Southern California and Dallas. Based in North Carolina. ${site.phone}.`,
   applicationName: site.brand,
   openGraph: {
     type: "website",
@@ -52,10 +52,7 @@ const jsonLd = {
   email: site.email,
   address: {
     "@type": "PostalAddress",
-    streetAddress: site.address.line1,
-    addressLocality: site.address.city,
-    addressRegion: site.address.state,
-    postalCode: site.address.zip,
+    addressRegion: "NC",
     addressCountry: "US",
   },
   openingHoursSpecification: [

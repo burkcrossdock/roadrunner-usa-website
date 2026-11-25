@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { nav, site } from "@/config/site";
+import { AnnouncementBar } from "@/components/announcement-bar";
 import { DeskStatus } from "@/components/desk-status";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
@@ -84,7 +85,10 @@ export function SiteHeader() {
 
   return (
     <div className="sticky top-0 z-50">
-      <div className="bg-ink text-cream">
+      <div className="relative z-50">
+        <AnnouncementBar />
+      </div>
+      <div className="relative z-50 bg-ink text-cream">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-5 py-2 text-[12px] md:px-8">
           <p className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-cream/80">
             <DeskStatus />
@@ -107,10 +111,10 @@ export function SiteHeader() {
           </p>
         </div>
       </div>
-      <header className="border-b border-white/10 bg-ink text-cream">
+      <header className="relative z-50 border-b border-white/10 bg-ink text-cream">
         <div className="mx-auto flex h-16 max-w-[1180px] items-center justify-between gap-4 px-5 md:h-[4.5rem] md:px-8">
           <Link href="/" aria-label={`${site.brand} home`}>
-            <Logo />
+            <Logo priority />
           </Link>
           <nav className="hidden items-center gap-6 xl:flex" aria-label="Primary">
             {nav
@@ -159,7 +163,7 @@ export function SiteHeader() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          className="fixed inset-0 z-40 overflow-y-auto bg-ink pt-[6.35rem] text-cream md:pt-[6.9rem] xl:hidden"
+          className="fixed inset-0 z-40 overflow-y-auto bg-ink pt-[8.85rem] text-cream md:pt-[9.4rem] xl:hidden"
         >
           <p id={titleId} className="sr-only">
             Site menu
@@ -201,6 +205,7 @@ export function SiteHeader() {
 export function HeaderFallback() {
   return (
     <div className="sticky top-0 z-50 bg-ink">
+      <div className="h-10 bg-[#0b0b0b]" />
       <div className="h-9 border-b border-white/10" />
       <div className="h-16 md:h-[4.5rem]" />
     </div>

@@ -16,15 +16,7 @@ export const site = {
   phoneHref: "tel:+14135397319",
   email: "info@rdrunnerusa.com",
   emailHref: "mailto:info@rdrunnerusa.com",
-  address: {
-    line1: "133 Greenbriar Drive",
-    city: "Matthews",
-    state: "NC",
-    zip: "28104",
-    full: "133 Greenbriar Drive, Matthews NC 28104",
-  },
-  mapsHref:
-    "https://www.google.com/maps/search/?api=1&query=133+Greenbriar+Drive%2C+Matthews+NC+28104",
+  location: "Based in North Carolina",
   hours: [
     { days: "Monday–Friday", time: "7:00 AM – 11:00 PM EST" },
     { days: "Saturday", time: "9:30 AM – 4:00 PM EST" },
@@ -39,6 +31,12 @@ export const site = {
     summary: "Southern California to Dallas, TX, and Dallas back to Southern California",
   },
 } as const;
+
+export const hubs = [
+  { city: "Mira Loma", state: "CA" },
+  { city: "Rock Hill", state: "SC" },
+  { city: "Grapevine", state: "TX" },
+] as const;
 
 /**
  * Numbers rendered in the homepage stat row.
@@ -68,7 +66,7 @@ export const stats = [
     id: "office",
     display: "NC",
     label: "Dispatch office",
-    detail: "Matthews, North Carolina",
+    detail: "Based in North Carolina",
   },
 ] as const;
 
@@ -76,8 +74,8 @@ export const services = [
   {
     number: "01",
     title: "Dispatch",
-    summary: "A Matthews desk that works the SoCal–Dallas round trip.",
-    body: "Dispatch sits at the Matthews office and lines up the eight dry vans on the lane between Southern California and Dallas. Call or email during posted hours and you reach the people who actually run these trucks.",
+    summary: "A North Carolina desk that works the SoCal–Dallas round trip.",
+    body: "Dispatch is based in North Carolina and lines up the eight dry vans on the lane between Southern California and Dallas. Call or email during posted hours and you reach the people who actually run these trucks.",
   },
   {
     number: "02",
@@ -108,7 +106,7 @@ export const steps = [
   {
     number: "02",
     title: "Dispatch prices it",
-    body: "The Matthews desk reviews the request during posted hours and comes back to the phone or email you gave us.",
+    body: "The desk reviews the request during posted hours and comes back to the phone or email you gave us.",
   },
   {
     number: "03",
@@ -133,18 +131,11 @@ export const partners = [
 export const socials = [
   {
     name: "Facebook",
-    href: "https://www.facebook.com/",
-    note: "Placeholder profile link",
+    href: "https://www.facebook.com/profile.php?id=61550872886760",
   },
   {
     name: "Instagram",
-    href: "https://www.instagram.com/",
-    note: "Placeholder profile link",
-  },
-  {
-    name: "LinkedIn",
-    href: "https://www.linkedin.com/",
-    note: "Placeholder profile link",
+    href: "https://www.instagram.com/roadrunnerusainc/",
   },
 ] as const;
 
@@ -204,7 +195,7 @@ export const faqs = [
   },
   {
     q: "Where is the office?",
-    a: "133 Greenbriar Drive, Matthews NC 28104. That is the dispatch and customer support office. It is not a stop on the California–Texas lane.",
+    a: "Based in North Carolina. That is dispatch and customer support. It is not a stop on the California–Texas lane.",
   },
 ] as const;
 
@@ -222,9 +213,8 @@ export const places = [
       "The other end of the round trip. Freight turns around here and runs back to Southern California.",
   },
   {
-    role: "Office",
-    name: "Matthews, North Carolina",
-    detail:
-      "133 Greenbriar Drive, Matthews NC 28104. Dispatch and customer support. Not a point on the freight lane.",
+    role: "Headquarters",
+    name: "Based in North Carolina",
+    detail: "Dispatch and customer support. Not a point on the freight lane.",
   },
 ] as const;

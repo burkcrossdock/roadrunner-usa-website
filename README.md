@@ -1,6 +1,6 @@
 # RoadRunner USA
 
-Marketing site for Roadrunner USA Inc, a dry van carrier running full truckloads between Southern California and Dallas, Texas. The office is in Matthews, North Carolina.
+Marketing site for Roadrunner USA Inc, a dry van carrier running full truckloads between Southern California and Dallas, Texas. Based in North Carolina.
 
 Stat numbers, hours, contact details, services, and partner names live in [`src/config/site.ts`](src/config/site.ts). Change them there.
 

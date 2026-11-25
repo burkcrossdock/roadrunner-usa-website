@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { partners, photos, site } from "@/config/site";
+import { hubs, partners, photos, site } from "@/config/site";
 import { Container } from "@/components/container";
 import { LaneMap } from "@/components/lane-map";
 import { PageHero } from "@/components/page-hero";
@@ -9,7 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `${site.legalName} is a Matthews, North Carolina carrier with eight dry vans on the Southern California–Dallas round trip.`,
+  description: `${site.legalName} is a carrier based in North Carolina with eight dry vans on the Southern California–Dallas round trip.`,
 };
 
 const facts = [
@@ -18,7 +18,8 @@ const facts = [
   { label: "Fleet", value: `${site.fleetCount} dry van trucks` },
   { label: "Freight", value: "Full truckload" },
   { label: "Main lane", value: site.lane.summary },
-  { label: "Office", value: site.address.full },
+  { label: "Office", value: site.location },
+  { label: "Hubs", value: hubs.map((hub) => `${hub.city}, ${hub.state}`).join(" · ") },
   { label: "Phone", value: site.phone },
   { label: "Email", value: site.email },
 ];
@@ -29,7 +30,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About"
         title="Built around one lane, not a national map."
-        lede={`${site.brand} is the name on the work. ${site.legalName} is the company. The office is in Matthews. The trucks run Southern California and Dallas.`}
+        lede={`${site.brand} is the name on the work. ${site.legalName} is the company. Based in North Carolina. The trucks run Southern California and Dallas.`}
       />
       <section className="bg-cream py-16 md:py-24">
         <Container className="grid items-center gap-10 lg:grid-cols-2">
@@ -37,8 +38,8 @@ export default function AboutPage() {
             <p>
               A small carrier does not need a long origin story to be clear. Eight
               dry vans. Full truckloads. A round trip between Southern California
-              and Dallas, Texas. Dispatch and customer support at{" "}
-              {site.address.full}.
+              and Dallas, Texas. Dispatch and customer support are based in North
+              Carolina. Hubs are in {hubs.map((hub) => `${hub.city}, ${hub.state}`).join("; ")}.
             </p>
             <p>
               Live location on the trucks is Verizon Connect. Partners named by

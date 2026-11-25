@@ -9,8 +9,7 @@ export function LaneMap() {
             <span className="text-signal">/</span> Core lane
           </p>
           <figcaption className="mt-2 max-w-md text-sm text-cream/70">
-            Round trip between {site.lane.west} and {site.lane.east}. The Matthews
-            office is marked off the lane.
+            Round trip between {site.lane.west} and {site.lane.east}.
           </figcaption>
         </div>
         <p className="hidden font-mono text-[11px] tracking-[0.16em] text-cream/40 uppercase sm:block">
@@ -20,7 +19,7 @@ export function LaneMap() {
       <svg
         viewBox="0 0 1000 460"
         role="img"
-        aria-label="Schematic map of the Southern California to Dallas round trip, with the Matthews North Carolina office marked separately"
+        aria-label="Schematic map of the Southern California to Dallas round trip"
         className="h-auto w-full"
       >
         <defs>
@@ -50,10 +49,6 @@ export function LaneMap() {
           fill="url(#land)"
         />
         <path
-          d="M820 150 C860 130 910 145 930 180 C948 212 930 250 890 258 C850 266 800 230 800 190 C800 168 808 156 820 150 Z"
-          fill="#243028"
-        />
-        <path
           d="M188 248 C300 140 430 340 612 214"
           fill="none"
           stroke="#e10600"
@@ -77,20 +72,10 @@ export function LaneMap() {
           strokeWidth="4"
           strokeLinecap="round"
         />
-        <path
-          d="M860 196 C820 210 780 250 740 250"
-          fill="none"
-          stroke="#f3f2ee"
-          strokeOpacity="0.35"
-          strokeWidth="2"
-          strokeDasharray="2 7"
-        />
         <circle cx="188" cy="248" r="11" fill="#e10600" />
         <circle cx="188" cy="248" r="4" fill="#fff" />
         <circle cx="612" cy="214" r="11" fill="#e10600" />
         <circle cx="612" cy="214" r="4" fill="#fff" />
-        <circle cx="860" cy="196" r="8" fill="#f3f2ee" />
-        <circle cx="860" cy="196" r="3" fill="#101410" />
         <text x="188" y="292" fill="#f3f2ee" fontSize="18" fontFamily="ui-sans-serif, system-ui">
           Southern California
         </text>
@@ -103,19 +88,12 @@ export function LaneMap() {
         <text x="560" y="158" fill="#f3f2ee" opacity="0.55" fontSize="13" fontFamily="ui-monospace, monospace">
           LANE END
         </text>
-        <text x="790" y="160" fill="#f3f2ee" fontSize="15" fontFamily="ui-sans-serif, system-ui">
-          Matthews, NC
-        </text>
-        <text x="790" y="142" fill="#f3f2ee" opacity="0.55" fontSize="12" fontFamily="ui-monospace, monospace">
-          OFFICE
-        </text>
         <text x="360" y="210" fill="#ffd0cc" fontSize="13" fontFamily="ui-monospace, monospace">
           ROUND TRIP
         </text>
       </svg>
-      <div className="grid gap-px bg-white/10 sm:grid-cols-3">
+      <div className="grid gap-px bg-white/10 sm:grid-cols-2">
         <Legend swatch="bg-signal" title="Red pair" body="The same lane, both directions." />
-        <Legend swatch="bg-cream" title="Gray pin" body="Dispatch office. Not a lane stop." />
         <Legend swatch="bg-white/30" title="Schematic" body="Cities are placed for reading, not to scale." />
       </div>
     </figure>

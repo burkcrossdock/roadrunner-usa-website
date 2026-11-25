@@ -16,7 +16,7 @@ export default function TrackingPage() {
       <PageHero
         eyebrow="Tracking"
         title="A load number in. A dispatcher back."
-        lede="Verizon Connect rides on the trucks. This page takes the load number and tells the Matthews desk to reply. It does not open a live map."
+        lede="Verizon Connect rides on the trucks. This page takes the load number and tells the desk to reply. It does not open a live map."
       />
       <section className="bg-cream py-14 md:py-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">

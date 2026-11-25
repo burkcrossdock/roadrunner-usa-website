@@ -177,7 +177,7 @@ export function InquiryForm({ kind }: { kind: FormKind }) {
           {pending ? "Sending…" : spec.submit}
         </Button>
         <p className="text-sm text-muted-foreground">
-          Goes to the Matthews office at {site.email}.
+          Goes to the office at {site.email}.
         </p>
       </div>
     </form>

@@ -105,7 +105,7 @@ export const formSpecs: Record<FormKind, FormSpec> = {
   quote: {
     kind: "quote",
     title: "Request a freight quote",
-    lede: "Send the lane, the date, and what is shipping. The Matthews desk replies during posted hours.",
+    lede: "Send the lane, the date, and what is shipping. The desk replies during posted hours.",
     submit: "Request a quote",
     success:
       "Quote request received. A dispatcher will follow up at the phone or email you listed, during office hours.",
@@ -162,7 +162,7 @@ export const formSpecs: Record<FormKind, FormSpec> = {
     lede: "Dry van work on the Southern California–Dallas round trip. Tell us how to reach you and how long you have held a CDL.",
     submit: "Submit application",
     success:
-      "Application received. The Matthews office will be in touch during posted hours.",
+      "Application received. The office will be in touch during posted hours.",
     fields: [
       {
         name: "name",
@@ -219,7 +219,7 @@ export const formSpecs: Record<FormKind, FormSpec> = {
     lede: "Questions that are not a quote, a load status, or a driver application can come here.",
     submit: "Send message",
     success:
-      "Message received. The Matthews office will reply during posted hours.",
+      "Message received. The office will reply during posted hours.",
     fields: [
       {
         name: "name",

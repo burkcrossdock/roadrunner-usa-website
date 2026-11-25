@@ -15,7 +15,7 @@ export default function QuotePage() {
       <PageHero
         eyebrow="Get a quote"
         title="Tell the desk what is moving."
-        lede="Pickup city, delivery city, ship date, and the freight. The Matthews office replies during posted hours."
+        lede="Pickup city, delivery city, ship date, and the freight. The office replies during posted hours."
       />
       <section className="bg-cream py-14 md:py-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[0.75fr_1.25fr]">

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { partners, site, socials } from "@/config/site";
+import { hubs, partners, site, socials } from "@/config/site";
 import { Container } from "@/components/container";
 import { InquiryForm } from "@/components/inquiry-form";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Call, email, or write ${site.legalName} at ${site.address.full}. ${site.phone}.`,
+  description: `Call or email ${site.legalName}. Based in North Carolina. ${site.phone}.`,
 };
 
 export default function ContactPage() {
@@ -14,7 +14,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="The desk is in Matthews."
+        title="Based in North Carolina."
         lede="Call, email, or send a note. Quote requests and load numbers have their own forms if that is what you need."
       />
       <section className="bg-cream py-14 md:py-20">
@@ -24,13 +24,17 @@ export default function ContactPage() {
               <p className="eyebrow text-muted-foreground">
                 <span className="text-signal">/</span> Office
               </p>
-              <address className="mt-3 text-lg not-italic leading-8">
-                <a className="font-semibold hover:text-signal" href={site.mapsHref}>
-                  {site.address.line1}
-                  <br />
-                  {site.address.city}, {site.address.state} {site.address.zip}
-                </a>
-              </address>
+              <p className="mt-3 text-lg font-semibold">{site.location}</p>
+              <p className="eyebrow mt-6 text-muted-foreground">
+                <span className="text-signal">/</span> Our Hubs
+              </p>
+              <ul className="mt-3 space-y-1 text-base">
+                {hubs.map((hub) => (
+                  <li key={hub.city}>
+                    {hub.city}, {hub.state}
+                  </li>
+                ))}
+              </ul>
               <p className="mt-4">
                 <a className="text-lg font-semibold hover:text-signal" href={site.phoneHref}>
                   {site.phone}
@@ -83,7 +87,12 @@ export default function ContactPage() {
               <ul className="mt-3 flex flex-wrap gap-4 text-sm">
                 {socials.map((item) => (
                   <li key={item.name}>
-                    <a href={item.href} title={item.note} className="hover:text-signal">
+                    <a
+                      href={item.href}
+                      className="hover:text-signal"
+                      target="_blank"
+                      rel="noopener"
+                    >
                       {item.name}
                     </a>
                   </li>

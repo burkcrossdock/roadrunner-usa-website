@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { partners, site, socials } from "@/config/site";
+import { hubs, partners, site, socials } from "@/config/site";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logo";
 
@@ -60,14 +60,16 @@ export function SiteFooter() {
           </div>
           <div>
             <p className="eyebrow text-cream/50">Office</p>
+            <p className="mt-4 text-sm leading-6 text-cream/80">{site.location}</p>
+            <p className="eyebrow mt-6 text-cream/50">Our Hubs</p>
+            <ul className="mt-3 space-y-1 text-sm leading-6 text-cream/80">
+              {hubs.map((hub) => (
+                <li key={hub.city}>
+                  {hub.city}, {hub.state}
+                </li>
+              ))}
+            </ul>
             <address className="mt-4 space-y-2 text-sm not-italic leading-6 text-cream/80">
-              <p>
-                <a className="hover:text-white" href={site.mapsHref}>
-                  {site.address.line1}
-                  <br />
-                  {site.address.city} {site.address.state} {site.address.zip}
-                </a>
-              </p>
               <p>
                 <a className="hover:text-white" href={site.phoneHref}>
                   {site.phone}
@@ -101,7 +103,8 @@ export function SiteFooter() {
                 <a
                   href={item.href}
                   className="text-cream/75 hover:text-white"
-                  title={item.note}
+                  target="_blank"
+                  rel="noopener"
                 >
                   {item.name}
                 </a>

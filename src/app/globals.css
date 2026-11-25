@@ -103,7 +103,7 @@
   h1,
   h2,
   h3 {
-    scroll-margin-top: 7.5rem;
+    scroll-margin-top: 12rem;
   }
   ::selection {
     background: #e10600;
