@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     default: `${site.brand} · Dry van truckload, SoCal to Dallas`,
     template: `%s · ${site.brand}`,
   },
-  description: `${site.legalName} runs company-operated dry vans, full truckload, between Southern California and Dallas. Based in North Carolina. ${site.phone}.`,
+  description: `${site.legalName} is a company-operated carrier specializing in full truckloads. Based in North Carolina. ${site.phone}.`,
   applicationName: site.brand,
   openGraph: {
     type: "website",

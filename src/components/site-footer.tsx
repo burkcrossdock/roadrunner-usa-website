@@ -13,8 +13,7 @@ export function SiteFooter() {
             {site.tagline}
           </p>
           <p className="mt-4 max-w-sm text-sm leading-6 text-cream/70">
-            {site.legalName} runs company-operated dry vans, full truckload, on the{" "}
-            {site.lane.summary.toLowerCase()}.
+            {site.legalName} is a company-operated carrier specializing in full truckloads.
           </p>
           <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
             {socials.map((item) => (
