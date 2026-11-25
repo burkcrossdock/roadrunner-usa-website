@@ -37,7 +37,7 @@ export default function AboutPage() {
           <div className="space-y-4 text-lg leading-8 text-ink/75">
             <p>
               Company-operated dry vans. Full truckloads. A round trip between Southern California
-              and Dallas, Texas. We also run Texas to North Carolina on occasion. Dispatch and customer support are based in North
+              and Dallas, Texas. Lane #2 runs Dallas, TX to Charlotte, NC. Dispatch and customer support are based in North
               Carolina. Hubs are in {hubs.map((hub) => `${hub.city}, ${hub.state}`).join("; ")}.
             </p>
             <p>

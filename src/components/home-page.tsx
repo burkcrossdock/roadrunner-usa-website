@@ -151,7 +151,7 @@ export function HomePage() {
               Southern California to Dallas, then back again.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-7 text-ink/70">
-              We also run Texas to North Carolina on occasion.
+              Lane #2 runs Dallas, TX to Charlotte, NC.
             </p>
           </Reveal>
           <Reveal>

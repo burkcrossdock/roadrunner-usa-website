@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, type ReactNode } from "react";
-import { hubs, site } from "@/config/site";
+import { hubs } from "@/config/site";
 
 const VIEW = { width: 632, height: 412, pad: 16 };
 const BOUNDS = { minLon: -125.4, maxLon: -66.5, minLat: 24.2, maxLat: 49.8 };
@@ -157,8 +157,8 @@ function pointAlong(points: Array<[number, number]>, distanceRatio: number) {
 const outline = linePath(OUTLINE) + " Z";
 const eastPath = linePath(EASTBOUND);
 const westPath = linePath(WESTBOUND);
-const occasionalEastPath = linePath(OCCASIONAL_EAST);
-const occasionalWestPath = linePath(OCCASIONAL_WEST);
+const lane2EastPath = linePath(OCCASIONAL_EAST);
+const lane2WestPath = linePath(OCCASIONAL_WEST);
 
 const locatedHubs = PANEL_ORDER.flatMap((city) => {
   const hub = hubs.find((item) => item.city === city);
@@ -176,9 +176,10 @@ export function LaneMap() {
   const activeHub = locatedHubs.find((hub) => hub.city === selected);
   const eastTruck = pointAlong(EASTBOUND, 0.34);
   const westTruck = pointAlong(WESTBOUND, 0.58);
-  const occasionalEastTruck = pointAlong(OCCASIONAL_EAST, 0.42);
-  const occasionalWestTruck = pointAlong(OCCASIONAL_WEST, 0.62);
-  const occasionalLabel = pointAlong(OCCASIONAL_EAST, 0.36);
+  const lane2EastTruck = pointAlong(OCCASIONAL_EAST, 0.42);
+  const lane2WestTruck = pointAlong(OCCASIONAL_WEST, 0.62);
+  const lane1Label = pointAlong(EASTBOUND, 0.48);
+  const lane2Label = pointAlong(OCCASIONAL_EAST, 0.4);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -196,13 +197,12 @@ export function LaneMap() {
             <span className="text-signal">/</span> Core lane
           </p>
           <figcaption className="mt-2 max-w-md text-sm text-cream/70">
-            Round trip between {site.lane.west} and {site.lane.east}. We also run Texas to
-            North Carolina on occasion.
+            Lane #1 runs Dallas, TX to Southern California. Lane #2 runs Dallas, TX to Charlotte, NC.
           </figcaption>
         </div>
         <div className="flex flex-wrap gap-2">
           <Chip>{hubs.length} hubs</Chip>
-          <Chip>1 core lane + 1 occasional</Chip>
+          <Chip>2 lanes</Chip>
         </div>
       </div>
 
@@ -210,7 +210,7 @@ export function LaneMap() {
         <svg
           viewBox={`0 0 ${VIEW.width} ${VIEW.height}`}
           role="img"
-          aria-label="Map of the contiguous United States showing the Southern California to Dallas round trip, an occasional Texas to North Carolina lane, three hubs, and headquarters in North Carolina"
+          aria-label="Map of the contiguous United States showing Lane 1 from Dallas, Texas to Southern California in red, and Lane 2 from Dallas, Texas to Charlotte, North Carolina in blue, with three hubs and headquarters in North Carolina"
           className="h-auto w-full"
         >
           <defs>
@@ -218,6 +218,13 @@ export function LaneMap() {
               <circle cx="1" cy="1" r="0.55" fill="#ffffff" opacity="0.16" />
             </pattern>
             <filter id={glowId} x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="2.4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id={`${glowId}-blue`} x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="2.4" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
@@ -265,39 +272,34 @@ export function LaneMap() {
             );
           })}
 
-          <g opacity="0.72">
+          <g filter={`url(#${glowId}-blue)`}>
             <path
-              d={occasionalEastPath}
+              d={lane2EastPath}
               fill="none"
-              stroke="#e10600"
-              strokeOpacity="0.55"
-              strokeWidth="1.35"
+              stroke="#3b82f6"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeDasharray="2 3.5"
             />
             <path
-              d={occasionalWestPath}
+              d={lane2WestPath}
               fill="none"
-              stroke="#ffb1ac"
-              strokeOpacity="0.8"
-              strokeWidth="1"
+              stroke="#3b82f6"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeDasharray="1.5 5"
-              className="lane-dash"
             />
           </g>
           <text
-            x={occasionalLabel[0]}
-            y={occasionalLabel[1] - 14}
+            x={lane2Label[0]}
+            y={lane2Label[1] - 12}
             textAnchor="middle"
-            fill="#f3f2ee"
-            fillOpacity="0.72"
-            fontSize="8"
+            fill="#93c5fd"
+            fontSize="9"
+            fontWeight="700"
             fontFamily="ui-sans-serif, system-ui, sans-serif"
           >
-            Texas to the Carolinas
+            Lane #2
           </text>
           <g filter={`url(#${glowId})`}>
             <path d={eastPath} fill="none" stroke="#e10600" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -312,6 +314,17 @@ export function LaneMap() {
               className="lane-dash"
             />
           </g>
+          <text
+            x={lane1Label[0]}
+            y={lane1Label[1] - 12}
+            textAnchor="middle"
+            fill="#ffb1ac"
+            fontSize="9"
+            fontWeight="700"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Lane #1
+          </text>
           <MovingTruck
             path={eastPath}
             x={eastTruck[0]}
@@ -329,22 +342,22 @@ export function LaneMap() {
             animate={!reduceMotion}
           />
           <MovingTruck
-            path={occasionalEastPath}
-            x={occasionalEastTruck[0]}
-            y={occasionalEastTruck[1]}
+            path={lane2EastPath}
+            x={lane2EastTruck[0]}
+            y={lane2EastTruck[1]}
             duration="20s"
             begin="-4s"
             animate={!reduceMotion}
-            scale={0.78}
+            color="#3b82f6"
           />
           <MovingTruck
-            path={occasionalWestPath}
-            x={occasionalWestTruck[0]}
-            y={occasionalWestTruck[1]}
+            path={lane2WestPath}
+            x={lane2WestTruck[0]}
+            y={lane2WestTruck[1]}
             duration="24s"
             begin="-15s"
             animate={!reduceMotion}
-            scale={0.78}
+            color="#3b82f6"
           />
 
           {locatedHubs.map((hub) => {
@@ -430,23 +443,20 @@ export function LaneMap() {
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 px-5 py-3 text-xs text-cream/70">
         <LegendSwatch>
+          <span className="inline-block h-0.5 w-5 rounded-full bg-[#e10600]" aria-hidden />
+          Lane #1 · Dallas, TX ↔ Southern California
+        </LegendSwatch>
+        <LegendSwatch>
+          <span className="inline-block h-0.5 w-5 rounded-full bg-[#3b82f6]" aria-hidden />
+          Lane #2 · Dallas, TX ↔ Charlotte, NC
+        </LegendSwatch>
+        <LegendSwatch>
           <span className="inline-block size-2.5 rounded-full border border-cream bg-ink" />
           Headquarters
         </LegendSwatch>
         <LegendSwatch>
           <span className="inline-block size-2.5 rounded-full bg-signal" />
           Hub
-        </LegendSwatch>
-        <LegendSwatch>
-          <span className="inline-flex items-center gap-0.5" aria-hidden>
-            <span className="h-2 w-3 rounded-[1px] bg-cream" />
-            <span className="h-2 w-1.5 rounded-[1px] bg-signal" />
-          </span>
-          Truck on lane
-        </LegendSwatch>
-        <LegendSwatch>
-          <span className="inline-block h-0 w-5 border-t border-dashed border-signal/80" aria-hidden />
-          Occasional lane
         </LegendSwatch>
       </div>
     </figure>
@@ -500,7 +510,7 @@ function MovingTruck({
   duration,
   begin,
   animate,
-  scale = 1,
+  color = "#e10600",
 }: {
   path: string;
   x: number;
@@ -508,24 +518,23 @@ function MovingTruck({
   duration: string;
   begin: string;
   animate: boolean;
-  scale?: number;
+  color?: string;
 }) {
-  const parked = `translate(${x} ${y})${scale === 1 ? "" : ` scale(${scale})`}`;
   return (
-    <g transform={animate ? undefined : parked}>
+    <g transform={animate ? undefined : `translate(${x} ${y})`}>
       {animate ? (
         <animateMotion dur={duration} begin={begin} repeatCount="indefinite" path={path} rotate="auto" />
       ) : null}
-      <TruckGlyph scale={animate ? scale : 1} />
+      <TruckGlyph color={color} />
     </g>
   );
 }
 
-function TruckGlyph({ scale = 1 }: { scale?: number }) {
+function TruckGlyph({ color = "#e10600" }: { color?: string }) {
   return (
-    <g transform={scale === 1 ? undefined : `scale(${scale})`}>
+    <g>
       <rect x="-7" y="-2.3" width="9" height="4.6" rx="0.7" fill="#f3f2ee" stroke="#101410" strokeWidth="0.45" />
-      <rect x="2.1" y="-2.3" width="3.8" height="4.6" rx="0.6" fill="#e10600" stroke="#101410" strokeWidth="0.45" />
+      <rect x="2.1" y="-2.3" width="3.8" height="4.6" rx="0.6" fill={color} stroke="#101410" strokeWidth="0.45" />
     </g>
   );
 }
