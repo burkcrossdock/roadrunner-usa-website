@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { hubs, partners, site, socials } from "@/config/site";
+import { hubs, site, socials } from "@/config/site";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logo";
 
@@ -16,6 +16,20 @@ export function SiteFooter() {
             {site.legalName} runs company-operated dry vans, full truckload, on the{" "}
             {site.lane.summary.toLowerCase()}.
           </p>
+          <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {socials.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  className="text-cream/75 hover:text-white"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="grid gap-10 sm:grid-cols-3 md:col-span-7">
           <div>
@@ -85,40 +99,8 @@ export function SiteFooter() {
         </div>
       </Container>
       <div className="border-t border-white/10">
-        <Container className="flex flex-col gap-6 py-6 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="eyebrow text-cream/45">Hours · Eastern</p>
-            <ul className="mt-2 space-y-1 text-sm text-cream/75">
-              {site.hours.map((row) => (
-                <li key={row.days}>
-                  {row.days} · {row.time}
-                </li>
-              ))}
-              <li>{site.hoursNote}</li>
-            </ul>
-          </div>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-            {socials.map((item) => (
-              <li key={item.name}>
-                <a
-                  href={item.href}
-                  className="text-cream/75 hover:text-white"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {item.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </div>
-      <div className="border-t border-white/10">
-        <Container className="flex flex-col gap-3 py-5 text-xs text-cream/45 md:flex-row md:items-center md:justify-between">
-          <p>
-            © 2026 {site.legalName}. Partners: {partners.join(" · ")}.
-          </p>
-          <p>Truck photography via Pexels and Unsplash. Not photos of this fleet.</p>
+        <Container className="py-5 text-xs text-cream/45">
+          <p>© 2026 {site.legalName}.</p>
         </Container>
       </div>
     </footer>
