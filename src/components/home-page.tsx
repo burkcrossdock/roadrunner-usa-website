@@ -279,9 +279,9 @@ export function HomePage() {
               Drive a dry van on a round trip you can describe in one sentence.
             </h2>
             <p className="mt-5 text-lg leading-8 text-ink/75">
-              Southern California to Dallas, and Dallas back to Southern California.
-              Send your name, phone, email, years with a CDL, and a short note.
-              Pay and home time are discussed with you. They are not listed here.
+              Our drivers run our core lane between Southern California and Dallas, Texas. To
+              apply, send your name, phone number, email, years of CDL experience, and a
+              short note about yourself. We&apos;ll go over pay and home time with you directly.
             </p>
             <Link
               href="/careers"

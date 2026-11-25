@@ -17,7 +17,7 @@ export default function CareersPage() {
       <PageHero
         eyebrow="Careers"
         title="Drive the Southern California–Dallas round trip."
-        lede="Dry van, full truckload, both directions. Company drivers earn $0.70/mile. Owner-operators keep 90% of revenue. Send your name, phone, email, years with a CDL, and a note."
+        lede="Our drivers run our core lane between Southern California and Dallas, Texas. To apply, send your name, phone number, email, years of CDL experience, and a short note about yourself. We'll go over pay and home time with you directly."
       />
       <section className="border-b border-line bg-paper">
         <Container className="grid gap-10 py-12 md:grid-cols-2 md:py-16">
