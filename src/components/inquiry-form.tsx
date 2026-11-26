@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, Upload, X } from "lucide-react";
 import { site } from "@/config/site";
-import { formSpecs, type FormKind, validateForm } from "@/lib/forms";
+import { cdlFileError, formSpecs, type FormKind, validateForm } from "@/lib/forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,23 +20,21 @@ export function InquiryForm({ kind }: { kind: FormKind }) {
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState(false);
   const [website, setWebsite] = useState("");
+  const [cdl, setCdl] = useState<File | null>(null);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const result = validateForm(kind, values);
-    if (!result.ok) {
-      setErrors(result.errors);
+    const fileError = kind === "career" ? (cdl ? cdlFileError(cdl) : "Add a copy of your CDL.") : null;
+    if (!result.ok || fileError) {
+      setErrors({ ...(result.ok ? {} : result.errors), ...(fileError ? { cdl: fileError } : {}) });
       setDone(false);
       return;
     }
     setPending(true);
     setErrors({});
     try {
-      const response = await fetch("/api/inquiries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ kind, fields: result.fields, website }),
-      });
+      const response = await fetch("/api/inquiries", careerRequest(kind, result.fields, website, cdl));
       const payload = (await response.json()) as {
         ok?: boolean;
         errors?: Record<string, string>;
@@ -70,6 +68,7 @@ export function InquiryForm({ kind }: { kind: FormKind }) {
           onClick={() => {
             setDone(false);
             setValues({});
+            setCdl(null);
           }}
         >
           Send another
@@ -151,6 +150,26 @@ export function InquiryForm({ kind }: { kind: FormKind }) {
           );
         })}
       </div>
+      {kind === "career" ? (
+        <CdlUpload
+          file={cdl}
+          error={errors.cdl}
+          onFile={(file) => {
+            const message = cdlFileError(file);
+            if (message) {
+              setErrors((current) => ({ ...current, cdl: message }));
+              return;
+            }
+            setCdl(file);
+            setErrors((current) => {
+              const next = { ...current };
+              delete next.cdl;
+              return next;
+            });
+          }}
+          onClear={() => setCdl(null)}
+        />
+      ) : null}
       {errors.reply ? (
         <p className="mt-4 text-sm text-signal" role="alert">
           {errors.reply}
@@ -181,5 +200,124 @@ export function InquiryForm({ kind }: { kind: FormKind }) {
         </p>
       </div>
     </form>
+  );
+}
+
+function careerRequest(
+  kind: FormKind,
+  fields: Record<string, string>,
+  website: string,
+  cdl: File | null,
+): RequestInit {
+  if (kind !== "career" || !cdl) {
+    return {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kind, fields, website }),
+    };
+  }
+  const body = new FormData();
+  body.set("kind", kind);
+  body.set("fields", JSON.stringify(fields));
+  body.set("website", website);
+  body.set("cdl", cdl, cdl.name);
+  return { method: "POST", body };
+}
+
+function CdlUpload({
+  file,
+  error,
+  onFile,
+  onClear,
+}: {
+  file: File | null;
+  error?: string;
+  onFile: (file: File) => void;
+  onClear: () => void;
+}) {
+  const [dragging, setDragging] = useState(false);
+
+  function take(list: FileList | null) {
+    const next = list?.[0];
+    if (next) onFile(next);
+  }
+
+  return (
+    <div className="mt-5 grid gap-2">
+      <p className="flex items-center gap-2 text-sm leading-none font-medium">
+        Copy of your CDL
+        <span className="text-signal" aria-hidden>
+          *
+        </span>
+      </p>
+      {file ? (
+        <div
+          onDragOver={(event) => {
+            event.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setDragging(false);
+            take(event.dataTransfer.files);
+          }}
+          className={cn(
+            "flex items-center justify-between gap-3 rounded-md border border-dashed bg-white px-4 py-4",
+            dragging ? "border-signal" : "border-line",
+          )}
+        >
+          <p className="min-w-0 truncate text-sm font-medium text-ink">{file.name}</p>
+          <button
+            type="button"
+            onClick={onClear}
+            className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-ink hover:text-signal"
+          >
+            <X className="size-4" aria-hidden />
+            Remove
+          </button>
+        </div>
+      ) : (
+        <label
+          onDragOver={(event) => {
+            event.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setDragging(false);
+            take(event.dataTransfer.files);
+          }}
+          className={cn(
+            "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed bg-white px-4 py-8 text-center",
+            dragging ? "border-signal bg-signal/5" : "border-line",
+          )}
+        >
+          <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#f2f1ed] text-signal">
+            <Upload className="size-5" aria-hidden />
+          </span>
+          <span className="text-sm font-medium text-ink">Click to upload your CDL · Max 25MB</span>
+          <input
+            id="career-cdl"
+            name="cdl"
+            type="file"
+            accept=".jpg,.jpeg,.png,.heic,.heif,.pdf,image/jpeg,image/png,image/heic,image/heif,application/pdf"
+            className="sr-only"
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? "career-cdl-error" : undefined}
+            onChange={(event) => {
+              take(event.target.files);
+              event.target.value = "";
+            }}
+          />
+        </label>
+      )}
+      {error ? (
+        <p id="career-cdl-error" className="text-sm text-signal">
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }

@@ -33,7 +33,9 @@ Each submission is handled in this order:
 
 Copy [`.env.example`](.env.example) to `.env.local` and fill in the channel you want.
 
-Without SMTP, Resend, or a webhook, the site still accepts the form. It writes a JSON file under `data/submissions/` when that directory is writable, and falls back to the system temp directory if it is not. A failed disk write is logged and does not stop the server. On Render that disk is wiped on every deploy and restart, so production mail needs SMTP, Resend, or a webhook. Do not commit files in `data/submissions/`; they can contain personal information.
+Driver applications also require a driver's license number and a CDL file (JPG, PNG, HEIC, or PDF, up to 25MB). That file is attached to the office email. The careers form reports success only after SMTP or Resend accepts the message. A webhook does not carry the file.
+
+Without SMTP, Resend, or a webhook, quote, tracking, and contact forms are still accepted. Each submission is written as JSON under `data/submissions/` when that directory is writable, and falls back to the system temp directory if it is not. A failed disk write is logged and does not stop the server. On Render that disk is wiped on every deploy and restart, so production mail needs SMTP or Resend. Do not commit files in `data/submissions/`; they can contain personal information.
 
 Resend’s onboarding sender only delivers to the Resend account owner until the `rdrunnerusa.com` domain is verified. Set `RESEND_FROM` to an address on that domain after verification.
 
@@ -50,7 +52,7 @@ Create a Web Service from the public GitHub repo, or apply the Blueprint.
 
 `npm start` binds to `0.0.0.0` on `process.env.PORT`. Render sets `PORT`; do not hard-code it.
 
-Set `NEXT_PUBLIC_SITE_URL` to the public `https://` origin. Set SMTP or Resend variables from `.env.example` so form mail reaches `info@rdrunnerusa.com`. The site still starts and accepts forms when those are unset.
+Set `NEXT_PUBLIC_SITE_URL` to the public `https://` origin. Set SMTP or Resend variables from `.env.example` so form mail reaches `info@rdrunnerusa.com`. Quote, tracking, and contact forms still submit when those are unset. The careers form needs SMTP or Resend so the CDL attachment can be delivered.
 
 ## Photos
 

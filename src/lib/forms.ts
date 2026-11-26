@@ -203,6 +203,16 @@ export const formSpecs: Record<FormKind, FormSpec> = {
         span: "half",
       },
       {
+        name: "licenseNumber",
+        label: "Driver's license number",
+        type: "text",
+        required: true,
+        autoComplete: "off",
+        placeholder: "License number",
+        maxLength: 40,
+        span: "half",
+      },
+      {
         name: "message",
         label: "Message",
         type: "textarea",
@@ -271,6 +281,52 @@ export const formSpecs: Record<FormKind, FormSpec> = {
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+export const CDL_MAX_BYTES = 25 * 1024 * 1024;
+
+const CDL_EXTENSIONS = new Set(["jpg", "jpeg", "png", "heic", "heif", "pdf"]);
+
+const CDL_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/heic",
+  "image/heif",
+  "image/heic-sequence",
+  "image/heif-sequence",
+  "application/pdf",
+]);
+
+export function cdlFileError(file: { name: string; size: number; type: string }) {
+  if (file.size <= 0) return "That file is empty. Choose a JPG, PNG, HEIC, or PDF.";
+  if (file.size > CDL_MAX_BYTES) return "That file is over 25MB. Choose a smaller copy.";
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+  const type = file.type.toLowerCase();
+  const extensionOk = CDL_EXTENSIONS.has(extension);
+  const typeOk = !type || type === "application/octet-stream" || CDL_MIME_TYPES.has(type);
+  if (!extensionOk || !typeOk) return "Use a JPG, PNG, HEIC, or PDF.";
+  return null;
+}
+
+export function safeCdlFilename(name: string) {
+  const base = name.split(/[/\\]/).pop() ?? "cdl";
+  const cleaned = base.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+/, "").slice(0, 80);
+  const extension = cleaned.split(".").pop()?.toLowerCase() ?? "";
+  if (!CDL_EXTENSIONS.has(extension)) return "cdl.pdf";
+  return cleaned || `cdl.${extension}`;
+}
+
+export function cdlContentType(name: string, type: string) {
+  const normalized = type.toLowerCase();
+  if (normalized === "image/jpg") return "image/jpeg";
+  if (CDL_MIME_TYPES.has(normalized)) return normalized;
+  const extension = name.split(".").pop()?.toLowerCase();
+  if (extension === "png") return "image/png";
+  if (extension === "pdf") return "application/pdf";
+  if (extension === "heic") return "image/heic";
+  if (extension === "heif") return "image/heif";
+  return "image/jpeg";
+}
+
 export type ValidationResult =
   | { ok: true; kind: FormKind; fields: Record<string, string> }
   | { ok: false; errors: Record<string, string> };
@@ -330,6 +386,9 @@ export function validateForm(kind: unknown, raw: unknown): ValidationResult {
     }
     if ((field.name === "freightDetails" || field.name === "message") && value.length < 8) {
       errors[field.name] = "Add a few more words so the office knows what you need.";
+    }
+    if (field.name === "licenseNumber" && !/^[A-Za-z0-9][A-Za-z0-9 -]{3,39}$/.test(value)) {
+      errors[field.name] = "Use the number printed on your license.";
     }
   }
 
